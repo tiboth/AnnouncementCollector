@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute} from '@angular/router';
 
 @Component({
   selector: 'app-announcement',
@@ -7,9 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class AnnouncementComponent implements OnInit {
 
-  constructor() { }
+  idAnnouncement: number;
+
+  constructor(private route: ActivatedRoute) { }
 
   ngOnInit() {
+    this.idAnnouncement = this.route.snapshot.params.id;
+
+    console.log('Getting announcement with id=' + this.idAnnouncement + '...');
   }
 
 }

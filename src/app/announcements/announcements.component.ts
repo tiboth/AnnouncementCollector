@@ -59,8 +59,15 @@ export class AnnouncementsComponent implements OnInit {
       enableSearchFilter: true
     };
     for (let i = 1; i <= 100; i++) {
-      this.announcements.push('Announcement ' + i + ' title');
+      this.announcements.push({id: i, title: 'Announcement ' + i + ' title'});
     }
+  }
+
+  findAnnouncements() {
+    console.log('Min price:' + this.minPrice);
+    console.log('Max price:' + this.maxPrice);
+    console.log('Nr rooms:' + this.nrRooms);
+    this.selectedOptions.forEach(option => console.log(option.itemName));
   }
 
   onOptionSelect() {

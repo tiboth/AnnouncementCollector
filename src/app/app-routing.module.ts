@@ -11,7 +11,7 @@ const routes: Routes = [
   {path: 'announcements', component: AnnouncementsComponent},
   {path: 'analytics', component: AnalyticsComponent},
   {path: 'about-us', component: AboutUsComponent},
-  {path: 'announcement', component: AnnouncementComponent},
+  {path: 'announcement/:id', component: AnnouncementComponent},
   {path: '**', component: ErrorComponent}
 ];
 

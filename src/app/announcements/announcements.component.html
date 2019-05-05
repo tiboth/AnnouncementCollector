@@ -1,6 +1,6 @@
-<br><br>
+<br xmlns: xmlns:><br>
 <div class="container">
-  <form (ngSubmit)="submitForm()">
+  <form (ngSubmit)="findAnnouncements()">
     <div class="row">
       <div class="col-sm">Select price range:</div>
       <div class="col-sm">
@@ -37,14 +37,14 @@
 
   <div class="row d-flex justify-content-center">
     <div class="list-group w-75">
-      <a href="#" class="list-group-item mb-1 w-100" *ngFor="let item of announcements | paginate: { itemsPerPage:20, currentPage: page}">
-        <div class="container">
+      <a class="list-group-item mb-1 w-100" *ngFor="let item of announcements | paginate: { itemsPerPage:20, currentPage: page}">
+        <div [routerLink]="['/announcement', item.id]" class="container">
           <div class="row">
             <div class="col-md-3">
               <img src="https://img2.imonet.ro/XA05/A0500I10CDC/apartament-de-vanzare-2-camere-bucuresti-militari-106563804_620x465.jpg" class="rounded mx-auto d-block" style="height: 100px; width: 150px;">
             </div>
             <div class="col-md-8" align="center">
-              <p class="text-center">{{item}}</p>
+              <p class="text-center">{{item.title}}</p>
             </div>
           </div>
         </div>
