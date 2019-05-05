@@ -1,0 +1,59 @@
+<br><br>
+<div class="container">
+  <form (ngSubmit)="submitForm()">
+    <div class="row">
+      <div class="col-sm">Select price range:</div>
+      <div class="col-sm">
+        <ng5-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="priceOptions"></ng5-slider>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-sm" style="margin-top: 10px">Select number of rooms:</div>
+      <div class="col-sm">
+        <ng5-slider [(value)]="nrRooms" [options]="roomOptions"></ng5-slider>
+      </div>
+    </div>
+    <div class="row" style="margin-top: 15px">
+      <div class="col-sm">Select number of rooms:</div>
+      <div class="col-sm">
+        <angular2-multiselect [data]="optionList"
+                              name="dropdown"
+                              required
+                              [(ngModel)]="selectedOptions"
+                              [settings]="optionSettings"
+                              (onSelect)="onOptionSelect()"
+                              (onDeSelect)="OnOptionDeSelect()"
+                              (onSelectAll)="onSelectAllOptions()"
+                              (onDeSelectAll)="onDeSelectAllOptions()">
+        </angular2-multiselect>
+      </div>
+    </div>
+    <div class="row justify-content-center mt-3">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Find</button>
+    </div>
+  </form>
+
+  <br><br><br>
+
+  <div class="row d-flex justify-content-center">
+    <div class="list-group w-75">
+      <a href="#" class="list-group-item mb-1 w-100" *ngFor="let item of announcements | paginate: { itemsPerPage:20, currentPage: page}">
+        <div class="container">
+          <div class="row">
+            <div class="col-md-3">
+              <img src="https://img2.imonet.ro/XA05/A0500I10CDC/apartament-de-vanzare-2-camere-bucuresti-militari-106563804_620x465.jpg" class="rounded mx-auto d-block" style="height: 100px; width: 150px;">
+            </div>
+            <div class="col-md-8" align="center">
+              <p class="text-center">{{item}}</p>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <br>
+  </div>
+  <div class="row d-flex justify-content-center mt-2 mb-2">
+    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+  </div>
+</div>
+
