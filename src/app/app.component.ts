@@ -10,5 +10,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit() {
     localStorage.setItem('arePreferencesSet', '0');
+    localStorage.setItem('likedList', JSON.stringify([]));
+    localStorage.setItem('deletedList', JSON.stringify([]));
   }
 }

@@ -61,8 +61,10 @@ export class AnnouncementsComponent implements OnInit {
   optionSettings = {};
   selectedOptions = [];
 
+  likedList = [];
+  deletedList = [];
+
   constructor(private utilService: UtilService, private elementRef: ElementRef) {
-    console.log('contr');
   }
 
   ngOnInit() {
@@ -101,9 +103,16 @@ export class AnnouncementsComponent implements OnInit {
       enableSearchFilter: true
     };
 
-    console.log('init');
+    this.likedList = JSON.parse(localStorage.getItem('likedList'));
+    this.deletedList = JSON.parse(localStorage.getItem('deletedList'));
     for (let i = 1; i <= 100; i++) {
-      this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: false});
+      if (this.deletedList.indexOf(i) === -1) {
+        if (this.likedList.indexOf(i) === -1) {
+          this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: false});
+        } else {
+          this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: true});
+        }
+      }
     }
   }
 
@@ -131,6 +140,9 @@ export class AnnouncementsComponent implements OnInit {
     localStorage.setItem('owner', '0');
     localStorage.setItem('agent', '0');
 
+    localStorage.setItem('likedList', JSON.stringify([]));
+    localStorage.setItem('deletedList', JSON.stringify([]));
+
     this.selectedOptions.forEach(option => {
       switch (option.itemName) {
         case ('New buildings(>2000)'):
@@ -153,6 +165,21 @@ export class AnnouncementsComponent implements OnInit {
           break;
       }
     });
+
+    // call service!!!
+
+    this.likedList = JSON.parse(localStorage.getItem('likedList'));
+    this.deletedList = JSON.parse(localStorage.getItem('deletedList'));
+    this.announcements = [];
+    for (let i = 1; i <= 100; i++) {
+      if (this.deletedList.indexOf(i) === -1) {
+        if (this.likedList.indexOf(i) === -1) {
+          this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: false});
+        } else {
+          this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: true});
+        }
+      }
+    }
   }
 
   onOptionSelect() {
@@ -198,13 +225,20 @@ export class AnnouncementsComponent implements OnInit {
   }
 
   likeAnnouncement(id: number) {
+    this.likedList.push(id);
+    localStorage.setItem('likedList', JSON.stringify(this.likedList));
+
     this.announcements.filter(elem => elem.id === id).forEach(elem => elem.like = !elem.like);
   }
 
   deleteAnnouncement(id: number) {
-    this.utilService.createToastrError('', 'Announcement deleted successfully');
+    this.deletedList.push(id);
+    localStorage.setItem('deletedList', JSON.stringify(this.deletedList));
+
     const index: number = this.announcements.findIndex(elem => elem.id === id);
     this.announcements.splice(index, 1);
+
+    this.utilService.createToastrError('', 'Announcement deleted successfully');
   }
 
   trackByFn(index: number, announcement: any): number {
