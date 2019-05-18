@@ -1,0 +1,19 @@
+.announcement:focus {
+  outline: none;
+  border: 0;
+}
+
+.fa-thumbs-up:hover {
+  color: green;
+  cursor: pointer;
+}
+
+.fa-thumbs-down:hover {
+  color: #96060d;
+  cursor: pointer;
+}
+
+.liked {
+  color: green;
+  font-weight: bold;
+}

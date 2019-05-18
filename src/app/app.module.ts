@@ -1,5 +1,6 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 import { ScrollToModule} from 'ng2-scroll-to-el';
 
@@ -7,7 +8,6 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { NavbarModule, WavesModule, ButtonsModule } from 'angular-bootstrap-md';
 import { AnnouncementsComponent } from './announcements/announcements.component';
-import { AnalyticsComponent } from './analytics/analytics.component';
 import { AboutUsComponent } from './about-us/about-us.component';
 import { ErrorComponent } from './error/error.component';
 import {Ng5SliderModule} from 'ng5-slider';
@@ -18,18 +18,29 @@ import { HeaderComponent } from './components/header/header.component';
 import {NgxPaginationModule} from 'ngx-pagination';
 import { AnnouncementComponent } from './announcement/announcement.component';
 import {CarouselModule} from 'ngx-bootstrap';
+import { PreferenceComponent } from './preference/preference.component';
+import {ArchwizardModule} from 'angular-archwizard';
+import { CollapsibleModule } from 'angular2-collapsible';
+import { Statistic1Component } from './statistics/statistic1/statistic1.component';
+import { Statistic2Component } from './statistics/statistic2/statistic2.component';
+import { Statistic3Component } from './statistics/statistic3/statistic3.component';
+import {ToastrModule} from 'ngx-toastr';
+import {UtilService} from './shared/service/util.service';
 
 
 @NgModule({
   declarations: [
     AppComponent,
     AnnouncementsComponent,
-    AnalyticsComponent,
     AboutUsComponent,
     ErrorComponent,
     FooterComponent,
     HeaderComponent,
-    AnnouncementComponent
+    AnnouncementComponent,
+    PreferenceComponent,
+    Statistic1Component,
+    Statistic2Component,
+    Statistic3Component,
   ],
   imports: [
     BrowserModule,
@@ -42,9 +53,16 @@ import {CarouselModule} from 'ngx-bootstrap';
     AngularMultiSelectModule,
     FormsModule,
     NgxPaginationModule,
-    CarouselModule
+    CarouselModule,
+    ArchwizardModule,
+    BrowserAnimationsModule,
+    CollapsibleModule,
+    ScrollToModule.forRoot(),
+    ToastrModule.forRoot()
   ],
-  providers: [],
+  providers: [
+    UtilService
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

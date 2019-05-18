@@ -7,17 +7,17 @@
   <div class="collapse navbar-collapse" id="navbarSupportedContent">
     <ul class="navbar-nav mr-auto">
       <li class="nav-item active">
-        <a class="nav-link" routerLink="/announcements">Find your perfect home<span class="sr-only">(current)</span></a>
+        <a class="nav-link" (click)="onClick()">Find your perfect home<span class="sr-only">(current)</span></a>
       </li>
       <li class="nav-item dropdown">
-        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" routerLink="/analytics">
+        <a class="nav-link dropdown-toggle" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           Market analysis
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-          <a class="dropdown-item" routerLink="/announcement/#stat1">Statistic1</a>
-          <a class="dropdown-item" routerLink="/announcement/#stat2">Statistic2</a>
+          <a class="dropdown-item" routerLink="/statistic1">Statistic1</a>
+          <a class="dropdown-item" routerLink="/statistic2">Statistic2</a>
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" routerLink="/announcement/#stat3">Price fluctuation</a>
+          <a class="dropdown-item" routerLink="/statistic3">Price fluctuation</a>
         </div>
       </li>
       <li class="nav-item">

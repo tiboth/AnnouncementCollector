@@ -1,50 +1,74 @@
 <br><br>
 <div class="container">
-  <form (ngSubmit)="findAnnouncements()">
-    <div class="row">
-      <div class="col-sm">Select price range:</div>
-      <div class="col-sm">
-        <ng5-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="priceOptions"></ng5-slider>
+  <div class="row justify-content-center">
+    <button class="btn btn-primary" type="button" data-toggle="collapse"
+            data-target="#preferenceId" aria-expanded="false" aria-controls="preferenceId"
+            (click)="onMyPreferencesClick()">
+      My preferences
+    </button>
+  </div>
+  <div class="collapse mt-2" id="preferenceId">
+    <form (ngSubmit)="onUpdatePreferencesClick()">
+      <div class="row">
+        <div class="col-sm">Select price range:</div>
+        <div class="col-sm">
+          <ng5-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="priceOptions"
+                      [manualRefresh]="sliderRefresh"></ng5-slider>
+        </div>
       </div>
-    </div>
-    <div class="row">
-      <div class="col-sm" style="margin-top: 10px">Select number of rooms:</div>
-      <div class="col-sm">
-        <ng5-slider [(value)]="nrRooms" [options]="roomOptions"></ng5-slider>
+      <div class="row">
+        <div class="col-sm" style="margin-top: 10px">Select number of rooms:</div>
+        <div class="col-sm">
+          <ng5-slider [(value)]="nrRooms" [options]="roomOptions" [manualRefresh]="sliderRefresh"></ng5-slider>
+        </div>
       </div>
-    </div>
-    <div class="row" style="margin-top: 15px">
-      <div class="col-sm">Select number of rooms:</div>
-      <div class="col-sm">
-        <angular2-multiselect [data]="optionList"
-                              name="dropdown"
-                              required
-                              [(ngModel)]="selectedOptions"
-                              [settings]="optionSettings"
-                              (onSelect)="onOptionSelect()"
-                              (onDeSelect)="OnOptionDeSelect()"
-                              (onSelectAll)="onSelectAllOptions()"
-                              (onDeSelectAll)="onDeSelectAllOptions()">
-        </angular2-multiselect>
+      <div class="row" style="margin-top: 15px">
+        <div class="col-sm">Select number of rooms:</div>
+        <div class="col-sm">
+          <angular2-multiselect [data]="optionList"
+                                name="dropdown"
+                                required
+                                [(ngModel)]="selectedOptions"
+                                [settings]="optionSettings"
+                                (onSelect)="onOptionSelect()"
+                                (onDeSelect)="OnOptionDeSelect()"
+                                (onSelectAll)="onSelectAllOptions()"
+                                (onDeSelectAll)="onDeSelectAllOptions()">
+          </angular2-multiselect>
+        </div>
       </div>
-    </div>
-    <div class="row justify-content-center mt-3">
-      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Find</button>
-    </div>
-  </form>
+      <div class="row justify-content-center mt-3">
+        <button class="btn btn-outline-success my-2 my-sm-0" data-toggle="collapse" data-target="#preferenceId"
+                aria-controls="preferenceId" type="submit">
+          Update preferences
+        </button>
+      </div>
+    </form>
+  </div>
 
   <br><br><br>
+  <h2 style="text-align: center;">Our recommendations:</h2>
+  <br><br>
 
-  <div class="row d-flex justify-content-center">
+  <div class="row d-flex justify-content-center" [@listAnimation]="announcements.length">
     <div class="list-group w-75">
-      <a class="list-group-item mb-1 w-100" *ngFor="let item of announcements | paginate: { itemsPerPage:20, currentPage: page}">
-        <div [routerLink]="['/announcement', item.id]" class="container">
+      <a id="{{item.id}}}" class="list-group-item mb-1 w-100"
+         *ngFor="let item of announcements | paginate: { itemsPerPage:20, currentPage: page}; trackBy:trackByFn">
+        <div class="container">
           <div class="row">
+            <div class="col text-right">
+              <i class="fa fa-thumbs-up mr-3" [ngClass]="{'liked': item.like }" (click)="likeAnnouncement(item.id)"></i>
+              <i class="fa fa-thumbs-down" (click)="deleteAnnouncement(item.id)"></i>
+            </div>
+          </div>
+          <div class="row announcement" [routerLink]="['/announcement', item.id]">
             <div class="col-md-3">
-              <img src="https://img2.imonet.ro/XA05/A0500I10CDC/apartament-de-vanzare-2-camere-bucuresti-militari-106563804_620x465.jpg" class="rounded mx-auto d-block" style="height: 100px; width: 150px;">
+              <img
+                src="https://img2.imonet.ro/XA05/A0500I10CDC/apartament-de-vanzare-2-camere-bucuresti-militari-106563804_620x465.jpg"
+                class="rounded mx-auto d-block" style="height: 100px; width: 150px;">
             </div>
             <div class="col-md-8" align="center">
-              <p class="text-center">{{item.title}}</p>
+              <p class="text-center" [ngClass]="{'liked': item.like }">{{item.title}}</p>
             </div>
           </div>
         </div>
@@ -56,4 +80,5 @@
     <pagination-controls (pageChange)="page = $event"></pagination-controls>
   </div>
 </div>
+<br><br><br>
 

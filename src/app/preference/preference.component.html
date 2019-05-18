@@ -1,0 +1,51 @@
+<div class="container justify-content-center" style="margin-top: 100px;margin-bottom: 150px;">
+  <h2 class="text-center">What are you seaching for?</h2>
+  <aw-wizard [navBarLayout]="'large-empty-symbols'" style="margin-top: 70px;">
+    <aw-wizard-step stepTitle="Your budget"
+                    [navigationSymbol]="{ symbol: '&#xf155;', fontFamily: 'FontAwesome' }">
+      <div class="row justify-content-center mb-1">
+        <div class="col-sm-5 mt-5">
+          <ng5-slider [(value)]="minPrice" [(highValue)]="maxPrice" [options]="priceOptions"></ng5-slider>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 100px;">
+        <button type="button" class="btn btn-outline-success col-2 ml-auto mt-3 mr-1" (click)="refreshSlider()" awNextStep>Next</button>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step stepTitle="Number of rooms"
+                    [navigationSymbol]="{ symbol: '&#xf236;', fontFamily: 'FontAwesome' }">
+      <div class="row justify-content-center">
+        <div class="col-sm-5 mt-5">
+          <ng5-slider [options]="roomOptions2" [(value)]="nrRooms" [manualRefresh]="sliderRefresh"></ng5-slider>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 100px;">
+        <button type="button" class="btn btn-outline-secondary col-2 mr-auto" awPreviousStep>Previous</button>
+        <button type="button" class="btn btn-outline-success col-2 ml-auto" awNextStep> Next</button>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step stepTitle="Options"
+                    [navigationSymbol]="{ symbol: '&#xf044;', fontFamily: 'FontAwesome' }">
+      <div class="row justify-content-center">
+        <div class="col-sm-5 mt-5">
+          <angular2-multiselect [data]="optionList"
+                                name="dropdown"
+                                required
+                                [(ngModel)]="selectedOptions"
+                                [settings]="optionSettings"
+                                (onSelect)="onOptionSelect()"
+                                (onDeSelect)="OnOptionDeSelect()"
+                                (onSelectAll)="onSelectAllOptions()"
+                                (onDeSelectAll)="onDeSelectAllOptions()">
+          </angular2-multiselect>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 100px;">
+        <button type="button" class="btn btn-outline-secondary col-2 mr-auto" awPreviousStep>Previous</button>
+        <button type="button" class="btn btn-success  col-2 ml-auto" (click)="finishFunction()">Finish</button>
+      </div>
+    </aw-wizard-step>
+  </aw-wizard>
+</div>
+
+
