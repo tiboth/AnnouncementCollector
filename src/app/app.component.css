@@ -1,3 +1,19 @@
+.header {
+  height: 56px;
+}
+
+.content {
+  min-height: 100%;
+  margin-top: -56px;
+  padding-top: 56px;
+  margin-bottom: -60px;
+  padding-bottom: 60px;
+}
+
+.footer {
+  height: 60px;
+}
+
 .navbar-nav > li{
   margin-left:30px;
   margin-right:30px;

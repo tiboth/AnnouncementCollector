@@ -1,4 +1,113 @@
-<p>
-  about-us works!
-</p>
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <form class="mb-2" style="width: 500px;" #formControl="ngForm" (ngSubmit)="onAddComment()">
+      <div class="text-center">
+        <h4>Add your comment</h4>
+      </div>
+      <div class="form-group">
+        <label for="title">Title:</label>
+        <input type="text"
+               class="form-control"
+               id="title"
+               placeholder="Enter title"
+               name="title"
+               [(ngModel)]="comment.title"
+               required
+               #titleControl="ngModel"
+               minlength="3"
+               maxlength="30"
+               [class.isInvalid]="titleControl.invalid && titleControl.touched">
+        <p style="height: 20px">
+          <small class="help-block text-danger"
+                 *ngIf="titleControl.invalid && titleControl.touched && titleControl.value != '' &&titleControl.value != null">
+            Please enter a valid Title.
+          </small>
+          <small class="help-block text-info" *ngIf="titleControl.value == null || titleControl.value == ''">
+            The title must be 3-20 characters long.
+          </small>
+          <small class="help-block text-info" *ngIf="titleControl.valid">Valid Title.</small>
+        </p>
+      </div>
+      <div class="form-group">
+        <label for="description">Share your opinion about this announcement:</label>
+        <textarea class="form-control"
+                  id="description"
+                  name="description"
+                  placeholder="Enter description"
+                  rows="5"
+                  [(ngModel)]="comment.description"
+                  required
+                  #descriptionControl="ngModel"
+                  minlength="6"
+                  maxlength="250"
+                  [class.isInvalid]="descriptionControl.invalid && descriptionControl.touched"
+        >
+        </textarea>
+        <p style="height: 20px">
+          <small class="help-block text-danger"
+                 *ngIf="descriptionControl.invalid && descriptionControl.touched && descriptionControl.value != '' &&descriptionControl.value != null">
+            Please enter a valid Description.
+          </small>
+          <small class="help-block text-info"
+                 *ngIf="descriptionControl.value == null || descriptionControl.value == ''">
+            Must be 6-250 characters long.
+          </small>
+          <small class="help-block text-info" *ngIf="descriptionControl.valid">Valid Description.</small>
+        </p>
+      </div>
+      <div class="text-center">
+        <button type="submit" class="btn btn-primary" [disabled]="formControl.invalid">Submit</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="container mt-2 mb-5">
+    <div class="row">
+      <div class="col-md-6 offset-md-3">
+        <h4>Comments:</h4>
+        <ul class="timeline">
+          <li *ngFor="let comment of commentsForAnnouncement">
+            <a target="_blank" href="#">{{comment.title}}</a>
+            <a href="#" class="float-right">{{comment.date | date: 'dd/MM/yyyy'}}</a>
+            <p>{{comment.description}}</p>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+<!--  <div class="container mt-2 mb-5">-->
+<!--    <div class="row">-->
+<!--      <div class="col-md-6 offset-md-3">-->
+<!--        <h4>Comments:</h4>-->
+<!--        <ul class="timeline">-->
+<!--          <li>-->
+<!--            <a target="_blank" href="https://www.totoprayogo.com/#">New Web Design</a>-->
+<!--            <a href="#" class="float-right">21 March, 2014</a>-->
+<!--            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Quisque scelerisque diam non nisi semper, et-->
+<!--              elementum lorem ornare. Maecenas placerat facilisis mollis. Duis sagittis ligula in sodales-->
+<!--              vehicula....</p>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <a href="#">21 000 Job Seekers</a>-->
+<!--            <a href="#" class="float-right">4 March, 2014</a>-->
+<!--            <p>Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo-->
+<!--              accumsan, sed semper nisi sollicitudin. Curabitur purus sem, malesuada eu luctus eget, suscipit sed-->
+<!--              turpis. Nam pellentesque felis vitae justo-->
+<!--              accumsan, sed semper nisi sollicitudin. Curabitur purus sem, malesuada eu luctus eget, suscipit sed-->
+<!--              turpis. Nam pellentesque felis vitae justo-->
+<!--              accumsan, sed semper nisi sollicitudin</p>-->
+<!--          </li>-->
+<!--          <li>-->
+<!--            <a href="#">Awesome Employers</a>-->
+<!--            <a href="#" class="float-right">1 April, 2014</a>-->
+<!--            <p>Fusce ullamcorper ligula sit amet quam accumsan aliquet. Sed nulla odio, tincidunt vitae nunc vitae,-->
+<!--              mollis pharetra velit. Sed nec tempor nibh...</p>-->
+<!--          </li>-->
+<!--        </ul>-->
+<!--      </div>-->
+<!--    </div>-->
+<!--  </div>-->
+</div>
+
 

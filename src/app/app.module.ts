@@ -12,7 +12,7 @@ import { AboutUsComponent } from './about-us/about-us.component';
 import { ErrorComponent } from './error/error.component';
 import {Ng5SliderModule} from 'ng5-slider';
 import {AngularMultiSelectModule} from 'angular2-multiselect-dropdown';
-import {FormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import { FooterComponent } from './components/footer/footer.component';
 import { HeaderComponent } from './components/header/header.component';
 import {NgxPaginationModule} from 'ngx-pagination';
@@ -44,6 +44,7 @@ import {UtilService} from './shared/service/util.service';
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     NavbarModule,
     WavesModule,
