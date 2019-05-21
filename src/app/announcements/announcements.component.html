@@ -47,10 +47,11 @@
   </div>
 
   <br><br><br>
-  <h2 style="text-align: center;">Our recommendations:</h2>
+  <h2 style="text-align: center;" *ngIf="announcements.length!=0">Our recommendations:</h2>
   <br><br>
 
-  <div class="row d-flex justify-content-center" [@listAnimation]="announcements.length">
+  <div class="row d-flex justify-content-center" [@listAnimation]="announcements.length"
+       *ngIf="announcements.length!=0">
     <div class="list-group w-75">
       <a id="{{item.id}}}" class="list-group-item mb-1 w-100"
          *ngFor="let item of announcements | paginate: { itemsPerPage:20, currentPage: page}; trackBy:trackByFn">
@@ -76,9 +77,17 @@
     </div>
     <br>
   </div>
-  <div class="row d-flex justify-content-center mt-2 mb-2">
+  <div class="row d-flex justify-content-center mt-2 mb-2" *ngIf="announcements.length!=0">
     <pagination-controls (pageChange)="page = $event"></pagination-controls>
   </div>
+
+  <div class="row d-flex justify-content-center" [@listAnimation]="announcements.length"
+       *ngIf="announcements.length==0">
+    <div class="list-group w-75 text-center">
+      <h3 style="color: #A9A9A9;">We couldn't find any announcement for you preferences.</h3>
+    </div>
+  </div>
+
 </div>
 <br><br><br>
 

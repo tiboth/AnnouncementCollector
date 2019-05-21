@@ -1,24 +1,111 @@
 <div class="container w-75">
   <div class="row w-100 justify-content-center">
     <carousel style="width: 950px;">
-      <slide>
-        <img class="img-fluid" src="https://img2.imonet.ro/XA05/A0500I10CDC/apartament-de-vanzare-2-camere-bucuresti-militari-106563804_620x465.jpg"  alt="first slide" style="display: block; width: 100%; height: 500px;">
-      </slide>
-      <slide>
-        <img class="img-fluid" src="https://nobili-interior-design.ro/images/design-interior-apartament-modern-Constanta.jpg"  alt="second slide" style="display: block; width: 100%; height: 500px;">
-      </slide>
-      <slide>
-        <img class="img-fluid" src="https://www.studioinsign.ro/wp-content/uploads/2016/05/Amenajare-interioara-Apartament-modern-Bucuresti-28.jpg"  alt="third slide" style="display: block; width: 100%; height: 500px;">
-      </slide>
+        <slide *ngFor="let image of announcement.images">
+          <img class="img-fluid" src="{{image}}" alt="first slide" style="display: block; width: 100%; height: 500px;">
+        </slide>
+        <!--      <slide>-->
+        <!--        <img class="img-fluid" src="https://nobili-interior-design.ro/images/design-interior-apartament-modern-Constanta.jpg"  alt="second slide" style="display: block; width: 100%; height: 500px;">-->
+        <!--      </slide>-->
+        <!--      <slide>-->
+        <!--        <img class="img-fluid" src="https://www.studioinsign.ro/wp-content/uploads/2016/05/Amenajare-interioara-Apartament-modern-Bucuresti-28.jpg"  alt="third slide" style="display: block; width: 100%; height: 500px;">-->
+        <!--      </slide>-->
     </carousel>
   </div>
   <div class="row">
-    <h1 class="text-center w-100 mt-1 mb-2">Real Estate Announcement title</h1>
+    <h1 class="text-center w-100 mt-1 mb-2">{{announcement.title}}</h1>
   </div>
   <div class="row mb-5">
-    <h3><i class="fa fa-edit" style="color: #28a745"></i>  Announcement description:</h3>
-    <p class="text-left w-100 mt-1 mb-2">Apartamentele semifinisate mi-au starnit creativitatea in alegerea personala, incearca si tu!
-      Blitz ofera spre vanzare un apartament de 4 camere, cu o suprafata utila de 93 mp, compartimentarea fiind decomandata, situat in zona istorica a Clujului, zona centrala, o zona in care oricine si-ar dori sa locuiasca. Apartamentul se vinde la stadiul de semifinisat, cu lavabila pe pereti, incalzire in pardoseala pe intreaga suprafata a imobilului, instalatie foarte bine gandita astfel incat toate utilitatile sa fie separate. Dispune de centrala termica proprie si geamuri termopan cu tamplarie din PVC.  Locuinta este una foarte luminoasa deoarece are atat expunere sudica cat si expunere vestica, acestea doua fiind cele mai cautate deoarece pe tot parcursul zilei apartamntul este luminat.
-      Imaginile au caracter informativ dar designul interior este gandit si realizat special pentru compartimentarea acestui apartament.</p>
+    <h3><i class="fa fa-edit" style="color: #28a745"></i> Announcement description:</h3>
+    <p class="text-left w-100 mt-1 mb-2">{{announcement.description}}</p>
+    <br>
+    <a target="_blank" href="{{announcement.originalLink}}"><p>Link to original post.</p></a>
+  </div>
+  <div class="container mt-4">
+    <div class="row justify-content-center">
+      <form class="mb-2" style="width: 500px;" #formControl="ngForm" (ngSubmit)="onAddComment()">
+        <div class="text-center">
+          <h4>Add your comment</h4>
+        </div>
+        <div class="form-group">
+          <label for="title">Title:</label>
+          <input type="text"
+                 class="form-control"
+                 id="title"
+                 placeholder="Enter title"
+                 name="title"
+                 [(ngModel)]="comment.title"
+                 required
+                 #titleControl="ngModel"
+                 minlength="3"
+                 maxlength="30"
+                 [class.isInvalid]="titleControl.invalid && titleControl.touched">
+          <p style="height: 20px">
+            <small class="help-block text-danger"
+                   *ngIf="titleControl.invalid && titleControl.touched && titleControl.value != '' &&titleControl.value != null">
+              Please enter a valid Title.
+            </small>
+            <small class="help-block text-info" *ngIf="titleControl.value == null || titleControl.value == ''">
+              The title must be 3-20 characters long.
+            </small>
+            <small class="help-block text-info" *ngIf="titleControl.valid">Valid Title.</small>
+          </p>
+        </div>
+        <div class="form-group">
+          <label for="description">Share your opinion about this announcement:</label>
+          <textarea class="form-control"
+                    id="description"
+                    name="description"
+                    placeholder="Enter description"
+                    rows="5"
+                    [(ngModel)]="comment.description"
+                    required
+                    #descriptionControl="ngModel"
+                    minlength="6"
+                    maxlength="250"
+                    [class.isInvalid]="descriptionControl.invalid && descriptionControl.touched"
+          >
+        </textarea>
+          <p style="height: 20px">
+            <small class="help-block text-danger"
+                   *ngIf="descriptionControl.invalid && descriptionControl.touched && descriptionControl.value != '' &&descriptionControl.value != null">
+              Please enter a valid Description.
+            </small>
+            <small class="help-block text-info"
+                   *ngIf="descriptionControl.value == null || descriptionControl.value == ''">
+              Must be 6-250 characters long.
+            </small>
+            <small class="help-block text-info" *ngIf="descriptionControl.valid">Valid Description.</small>
+          </p>
+        </div>
+        <div class="text-center">
+          <button type="submit" class="btn btn-primary" [disabled]="formControl.invalid">Submit</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="container mt-2 mb-5" *ngIf="commentsForAnnouncement.length!=0">
+      <div class="row">
+        <div class="col-md-6 offset-md-3">
+          <h4>Comments:</h4>
+          <ul class="timeline">
+            <li *ngFor="let comment of commentsForAnnouncement">
+              <a target="_blank" href="#">{{comment.title}}</a>
+              <a href="#" class="float-right">{{comment.date | date: 'dd/MM/yyyy'}}</a>
+              <p>{{comment.description}}</p>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container mt-2 mb-5" *ngIf="commentsForAnnouncement.length==0">
+      <div class="row">
+        <div class="col-md-6 offset-md-3 text-center">
+          <h3 style="color: #A9A9A9;">There are no comments.</h3>
+        </div>
+      </div>
+    </div>
+    >
   </div>
 </div>

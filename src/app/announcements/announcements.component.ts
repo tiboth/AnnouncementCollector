@@ -105,15 +105,15 @@ export class AnnouncementsComponent implements OnInit {
 
     this.likedList = JSON.parse(localStorage.getItem('likedList'));
     this.deletedList = JSON.parse(localStorage.getItem('deletedList'));
-    for (let i = 1; i <= 100; i++) {
-      if (this.deletedList.indexOf(i) === -1) {
-        if (this.likedList.indexOf(i) === -1) {
-          this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: false});
-        } else {
-          this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: true});
-        }
-      }
-    }
+    // for (let i = 1; i <= 100; i++) {
+    //   if (this.deletedList.indexOf(i) === -1) {
+    //     if (this.likedList.indexOf(i) === -1) {
+    //       this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: false});
+    //     } else {
+    //       this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: true});
+    //     }
+    //   }
+    // }
   }
 
   onUpdatePreferencesClick() {
