@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {HttpClient} from '@angular/common/http';
 import {Announcement} from '../model/announcement';
+import {Observable} from 'rxjs';
 
 @Injectable()
 export class AnnouncementService {
@@ -9,15 +10,17 @@ export class AnnouncementService {
 
   constructor(private httpClient: HttpClient) {}
 
-  filterAnnouncement(minPrice: number, maxPrice: number, nrRooms: number, isNew: boolean, isOld: boolean,
-                     isDetached: boolean, isSemiDetached: boolean, isSoldByOwner: boolean, isSoldByAgent: boolean) {
+  getNext20Announcement(minPrice: number, maxPrice: number, nrRooms: number, isNew: boolean,
+                        isOld: boolean, isDetached: boolean, isSemiDetached: boolean, isSoldByOwner: boolean,
+                        isSoldByAgent: boolean, from: number): Observable<Array<Announcement>> {
     // tslint:disable-next-line:max-line-length
-    const url = `${this.baseUrl}/announcement/${maxPrice}/${minPrice}/${nrRooms}/${isNew}/${isOld}/${isDetached}/${isSemiDetached}/${isSoldByOwner}/${isSoldByAgent}`;
+    const url = `${this.baseUrl}/announcement/${maxPrice}/${minPrice}/${nrRooms}/${isNew}/${isOld}/${isDetached}/${isSemiDetached}/${isSoldByOwner}/${isSoldByAgent}/${from}`;
     return this.httpClient.get<Array<Announcement>>(url);
   }
 
-  findAnnouncement(id: number) {
-    const url = `${this.baseUrl}/announcement/${id}`;
-    return this.httpClient.get<Array<Announcement>>(url);
+  getAnnouncement(announcementId: number): Observable<Announcement> {
+    const url = `${this.baseUrl}/announcement/${announcementId}`;
+    return this.httpClient.get<Announcement>(url);
   }
+
 }

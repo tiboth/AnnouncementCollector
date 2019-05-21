@@ -78,7 +78,7 @@
     <br>
   </div>
   <div class="row d-flex justify-content-center mt-2 mb-2" *ngIf="announcements.length!=0">
-    <pagination-controls (pageChange)="page = $event"></pagination-controls>
+    <pagination-controls (pageChange)="onPageChange($event)"></pagination-controls>
   </div>
 
   <div class="row d-flex justify-content-center" [@listAnimation]="announcements.length"

@@ -26,6 +26,9 @@ import { Statistic2Component } from './statistics/statistic2/statistic2.componen
 import { Statistic3Component } from './statistics/statistic3/statistic3.component';
 import {ToastrModule} from 'ngx-toastr';
 import {UtilService} from './shared/service/util.service';
+import {AnnouncementService} from './shared/service/announcement.service';
+import {CommentService} from './shared/service/comment.service';
+import {HttpClientModule} from '@angular/common/http';
 
 
 @NgModule({
@@ -59,10 +62,13 @@ import {UtilService} from './shared/service/util.service';
     BrowserAnimationsModule,
     CollapsibleModule,
     ScrollToModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    HttpClientModule
   ],
   providers: [
-    UtilService
+    UtilService,
+    AnnouncementService,
+    CommentService,
   ],
   bootstrap: [AppComponent]
 })

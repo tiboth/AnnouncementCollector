@@ -2,6 +2,8 @@ import {Component, ElementRef, EventEmitter, OnInit} from '@angular/core';
 import {LabelType, Options} from 'ng5-slider';
 import {UtilService} from '../shared/service/util.service';
 import { trigger, style, transition, animate, keyframes, query, stagger} from '@angular/animations';
+import {AnnouncementService} from '../shared/service/announcement.service';
+import {Announcement} from '../shared/model/announcement';
 
 @Component({
   selector: 'app-announcements',
@@ -32,6 +34,7 @@ import { trigger, style, transition, animate, keyframes, query, stagger} from '@
 export class AnnouncementsComponent implements OnInit {
   sliderRefresh: EventEmitter<void> = new EventEmitter<void>();
   announcements = [];
+  announcementsFromCore: Array<Announcement>;
   page = 1;
   minPrice = +localStorage.getItem('minPrice');
   maxPrice = +localStorage.getItem('maxPrice');
@@ -64,7 +67,14 @@ export class AnnouncementsComponent implements OnInit {
   likedList = [];
   deletedList = [];
 
-  constructor(private utilService: UtilService, private elementRef: ElementRef) {
+  isNew = false;
+  isOld = false;
+  isDetached = false;
+  isSemiDetached = false;
+  isOwner = false;
+  isAgent = false;
+
+  constructor(private utilService: UtilService, private announcementService: AnnouncementService) {
   }
 
   ngOnInit() {
@@ -79,21 +89,27 @@ export class AnnouncementsComponent implements OnInit {
 
     if (localStorage.getItem('newBuilding') === '1') {
       this.selectedOptions.push({id: 1, itemName: 'New buildings(>2000)'});
+      this.isNew  = true;
     }
     if (localStorage.getItem('oldBuilding') === '1') {
       this.selectedOptions.push({id: 2, itemName: 'Old buildings(<2000)'});
+      this.isOld = true;
     }
     if (localStorage.getItem('detached') === '1') {
       this.selectedOptions.push({id: 3, itemName: 'Detached'});
+      this.isDetached = true;
     }
     if (localStorage.getItem('semiDetached') === '1') {
       this.selectedOptions.push({id: 4, itemName: 'Semi detached'});
+      this.isSemiDetached = true;
     }
     if (localStorage.getItem('owner') === '1') {
       this.selectedOptions.push({id: 5, itemName: 'Sell by owner'});
+      this.isOwner = true;
     }
     if (localStorage.getItem('agent') === '1') {
       this.selectedOptions.push({ id: 6, itemName: 'Sell by real estate agent' });
+      this.isAgent = true;
     }
 
     this.optionSettings = {
@@ -105,6 +121,20 @@ export class AnnouncementsComponent implements OnInit {
 
     this.likedList = JSON.parse(localStorage.getItem('likedList'));
     this.deletedList = JSON.parse(localStorage.getItem('deletedList'));
+
+    // service call
+    /* this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
+                                                    this.isOld, this.isDetached, this.isSemiDetached, this.isOwner, this.isAgent, 0)
+      .subscribe(result => this.announcementsFromCore = result,
+                  error => console.log(JSON.stringify(error)),
+                  () => this.announcementsFromCore.forEach(announcement => {
+                                    if (this.deletedList.indexOf(announcement.id) === -1) {
+                                      if (this.likedList.indexOf(announcement.id) === -1) {
+                                        this.announcements.push({id: announcement.id, title: announcement.title, like: false});
+                                      } else {
+                                        this.announcements.push({id: announcement.id, title: announcement.title, like: true});
+                                    }}})); */
+
     // for (let i = 1; i <= 100; i++) {
     //   if (this.deletedList.indexOf(i) === -1) {
     //     if (this.likedList.indexOf(i) === -1) {
@@ -140,6 +170,13 @@ export class AnnouncementsComponent implements OnInit {
     localStorage.setItem('owner', '0');
     localStorage.setItem('agent', '0');
 
+    this.isNew = false;
+    this.isOld = false;
+    this.isDetached = false;
+    this.isSemiDetached = false;
+    this.isOwner = false;
+    this.isAgent = false;
+
     localStorage.setItem('likedList', JSON.stringify([]));
     localStorage.setItem('deletedList', JSON.stringify([]));
 
@@ -147,30 +184,49 @@ export class AnnouncementsComponent implements OnInit {
       switch (option.itemName) {
         case ('New buildings(>2000)'):
           localStorage.setItem('newBuilding', '1');
+          this.isNew = true;
           break;
         case 'Old buildings(<2000)':
           localStorage.setItem('oldBuilding', '1');
+          this.isOld = true;
           break;
         case 'Detached':
           localStorage.setItem('detached', '1');
+          this.isDetached = true;
           break;
         case 'Semi detached':
           localStorage.setItem('semiDetached', '1');
+          this.isSemiDetached = true;
           break;
         case 'Sell by owner':
           localStorage.setItem('owner', '1');
+          this.isOwner = true;
           break;
         case 'Sell by real estate agent':
           localStorage.setItem('agent', '1');
+          this.isAgent = true;
           break;
       }
     });
 
-    // call service!!!
-
     this.likedList = JSON.parse(localStorage.getItem('likedList'));
     this.deletedList = JSON.parse(localStorage.getItem('deletedList'));
     this.announcements = [];
+    this.page = 0;
+
+    // call service
+    /*this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
+      this.isOld, this.isDetached, this.isSemiDetached, this.isOwner, this.isAgent, 0)
+      .subscribe(result => this.announcementsFromCore = result,
+        error => console.log(JSON.stringify(error)),
+        () => this.announcementsFromCore.forEach(announcement => {
+          if (this.deletedList.indexOf(announcement.id) === -1) {
+            if (this.likedList.indexOf(announcement.id) === -1) {
+              this.announcements.push({id: announcement.id, title: announcement.title, like: false});
+            } else {
+              this.announcements.push({id: announcement.id, title: announcement.title, like: true});
+            }}})); */
+
     for (let i = 1; i <= 100; i++) {
       if (this.deletedList.indexOf(i) === -1) {
         if (this.likedList.indexOf(i) === -1) {
@@ -243,6 +299,26 @@ export class AnnouncementsComponent implements OnInit {
 
   trackByFn(index: number, announcement: any): number {
     return announcement.id;
+  }
+
+  onPageChange(page: number) {
+    this.page = page;
+    console.log(page);
+
+    // this.announcements = [];
+    // service call
+    // call service
+    /*this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
+      this.isOld, this.isDetached, this.isSemiDetached, this.isOwner, this.isAgent, (page - 1) * 20)
+      .subscribe(result => this.announcementsFromCore = result,
+        error => console.log(JSON.stringify(error)),
+        () => this.announcementsFromCore.forEach(announcement => {
+          if (this.deletedList.indexOf(announcement.id) === -1) {
+            if (this.likedList.indexOf(announcement.id) === -1) {
+              this.announcements.push({id: announcement.id, title: announcement.title, like: false});
+            } else {
+              this.announcements.push({id: announcement.id, title: announcement.title, like: true});
+            }}})); */
   }
 
 }
