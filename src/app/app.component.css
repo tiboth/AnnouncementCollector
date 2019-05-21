@@ -1,10 +1,17 @@
-.header {
-  height: 56px;
+.site {
+  min-height: 100vh;
+  position: relative;
 }
 
+.header {
+  height: 56px;
+  z-index: 999;
+  position: relative;
+}
+.navbar{
+  z-index: 99999999;
+}
 .content {
-  min-height: 100%;
-  height: auto !important;
   margin-top: -56px;
   padding-top: 56px;
   margin-bottom: -60px;
@@ -12,6 +19,9 @@
 }
 
 .footer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
   height: 60px;
 }
 
