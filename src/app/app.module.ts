@@ -2,6 +2,8 @@ import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
+import {AgmCoreModule} from '@agm/core';
+
 import { ScrollToModule} from 'ng2-scroll-to-el';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -63,7 +65,10 @@ import {HttpClientModule} from '@angular/common/http';
     CollapsibleModule,
     ScrollToModule.forRoot(),
     ToastrModule.forRoot(),
-    HttpClientModule
+    HttpClientModule,
+    AgmCoreModule.forRoot({
+      apiKey: 'AIzaSyBMXtTwi13R4l2-vbCxsOv5ciPk-PJ15T8'
+    })
   ],
   providers: [
     UtilService,

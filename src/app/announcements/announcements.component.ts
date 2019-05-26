@@ -4,6 +4,7 @@ import {UtilService} from '../shared/service/util.service';
 import { trigger, style, transition, animate, keyframes, query, stagger} from '@angular/animations';
 import {AnnouncementService} from '../shared/service/announcement.service';
 import {Announcement} from '../shared/model/announcement';
+import {AnnouncementDemo} from '../shared/model/announcement.demo';
 
 @Component({
   selector: 'app-announcements',
@@ -34,7 +35,7 @@ import {Announcement} from '../shared/model/announcement';
 export class AnnouncementsComponent implements OnInit {
   sliderRefresh: EventEmitter<void> = new EventEmitter<void>();
   announcements = [];
-  announcementsFromCore: Array<Announcement>;
+  announcementsFromCore: Array<AnnouncementDemo>;
   page = 1;
   minPrice = +localStorage.getItem('minPrice');
   maxPrice = +localStorage.getItem('maxPrice');
