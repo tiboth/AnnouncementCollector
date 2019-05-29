@@ -35,13 +35,14 @@ import {AnnouncementDemo} from '../shared/model/announcement.demo';
 export class AnnouncementsComponent implements OnInit {
   sliderRefresh: EventEmitter<void> = new EventEmitter<void>();
   announcements = [];
+  nrAnnouncements = 0;
   announcementsFromCore: Array<AnnouncementDemo>;
   page = 1;
   minPrice = +localStorage.getItem('minPrice');
   maxPrice = +localStorage.getItem('maxPrice');
   priceOptions: Options = {
-    floor: 10000,
-    ceil: 150000,
+    floor: 75,
+    ceil: 1000,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
@@ -124,17 +125,27 @@ export class AnnouncementsComponent implements OnInit {
     this.deletedList = JSON.parse(localStorage.getItem('deletedList'));
 
     // service call
-    /* this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
-                                                    this.isOld, this.isDetached, this.isSemiDetached, this.isOwner, this.isAgent, 0)
+    this.announcementService.getNrFound(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
+      this.isOwner, this.isAgent)
+      .subscribe(result => this.nrAnnouncements = result,
+        error => console.log(JSON.stringify(error)));
+
+    console.log('Nr received from core: ' + this.nrAnnouncements.toString());
+
+    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
+       this.isOwner, this.isAgent, 0)
       .subscribe(result => this.announcementsFromCore = result,
                   error => console.log(JSON.stringify(error)),
                   () => this.announcementsFromCore.forEach(announcement => {
                                     if (this.deletedList.indexOf(announcement.id) === -1) {
                                       if (this.likedList.indexOf(announcement.id) === -1) {
-                                        this.announcements.push({id: announcement.id, title: announcement.title, like: false});
+                                        // tslint:disable-next-line:max-line-length
+                                        this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
+                                        console.log('url:' + announcement.firstImage);
                                       } else {
-                                        this.announcements.push({id: announcement.id, title: announcement.title, like: true});
-                                    }}})); */
+                                        // tslint:disable-next-line:max-line-length
+                                        this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
+                                    }}}));
 
     // for (let i = 1; i <= 100; i++) {
     //   if (this.deletedList.indexOf(i) === -1) {
@@ -148,6 +159,24 @@ export class AnnouncementsComponent implements OnInit {
   }
 
   onUpdatePreferencesClick() {
+    this.announcementService.getNrFound(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
+      this.isOwner, this.isAgent)
+      .subscribe(result => this.nrAnnouncements = result,
+        error => console.log(JSON.stringify(error)));
+    console.log('Nr received from core: ' + this.nrAnnouncements.toString());
+
+    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
+      this.isOwner, this.isAgent, 0)
+      .subscribe(result => this.announcementsFromCore = result,
+        error => console.log(JSON.stringify(error)),
+        () => this.announcementsFromCore.forEach(announcement => {
+          if (this.deletedList.indexOf(announcement.id) === -1) {
+            if (this.likedList.indexOf(announcement.id) === -1) {
+              // tslint:disable-next-line:max-line-length
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
+            } else {
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
+            }}}));
     this.utilService.createToastrSuccsess('', 'Your preferences are updated.');
     this.findAnnouncements();
   }
@@ -216,27 +245,28 @@ export class AnnouncementsComponent implements OnInit {
     this.page = 0;
 
     // call service
-    /*this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
-      this.isOld, this.isDetached, this.isSemiDetached, this.isOwner, this.isAgent, 0)
+    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
+      this.isOld, this.isOwner, this.isAgent, 0)
       .subscribe(result => this.announcementsFromCore = result,
         error => console.log(JSON.stringify(error)),
         () => this.announcementsFromCore.forEach(announcement => {
           if (this.deletedList.indexOf(announcement.id) === -1) {
             if (this.likedList.indexOf(announcement.id) === -1) {
-              this.announcements.push({id: announcement.id, title: announcement.title, like: false});
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
             } else {
-              this.announcements.push({id: announcement.id, title: announcement.title, like: true});
-            }}})); */
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
+            }}}));
+    this.page = 1;
 
-    for (let i = 1; i <= 100; i++) {
-      if (this.deletedList.indexOf(i) === -1) {
-        if (this.likedList.indexOf(i) === -1) {
-          this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: false});
-        } else {
-          this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: true});
-        }
-      }
-    }
+    // for (let i = 1; i <= 100; i++) {
+    //   if (this.deletedList.indexOf(i) === -1) {
+    //     if (this.likedList.indexOf(i) === -1) {
+    //       this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: false});
+    //     } else {
+    //       this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: true});
+    //     }
+    //   }
+    // }
   }
 
   onOptionSelect() {
@@ -304,7 +334,7 @@ export class AnnouncementsComponent implements OnInit {
 
   onPageChange(page: number) {
     this.page = page;
-    console.log(page);
+    window.scrollTo(0, 0);
 
     // this.announcements = [];
     // service call

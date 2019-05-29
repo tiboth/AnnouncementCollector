@@ -9,7 +9,6 @@ export class UtilService {
   }
 
   createToastrSuccsess(message: string, title: string) {
-    console.log('itt');
     this.toastrService.success(message, title, {
       progressAnimation: 'increasing',
       progressBar: true,

@@ -12,11 +12,19 @@ export class AnnouncementService {
   constructor(private httpClient: HttpClient) {}
 
   getNext20Announcement(minPrice: number, maxPrice: number, nrRooms: number, isNew: boolean,
-                        isOld: boolean, isDetached: boolean, isSemiDetached: boolean, isSoldByOwner: boolean,
+                        isOld: boolean, isSoldByOwner: boolean,
                         isSoldByAgent: boolean, from: number): Observable<Array<AnnouncementDemo>> {
     // tslint:disable-next-line:max-line-length
-    const url = `${this.baseUrl}/announcement/${maxPrice}/${minPrice}/${nrRooms}/${isNew}/${isOld}/${isDetached}/${isSemiDetached}/${isSoldByOwner}/${isSoldByAgent}/${from}`;
+    const url = `${this.baseUrl}/announcement/${minPrice}/${maxPrice}/${nrRooms}/${isNew}/${isOld}/${isSoldByOwner}/${isSoldByAgent}/${from}`;
     return this.httpClient.get<Array<AnnouncementDemo>>(url);
+  }
+
+  getNrFound(minPrice: number, maxPrice: number, nrRooms: number, isNew: boolean,
+             isOld: boolean, isSoldByOwner: boolean,
+             isSoldByAgent: boolean): Observable<number> {
+    const url = `${this.baseUrl}/announcement/count/${minPrice}/${maxPrice}/${nrRooms}/${isNew}/${isOld}/${isSoldByOwner}/${isSoldByAgent}`;
+    console.log('call:' + url);
+    return this.httpClient.get<number>(url);
   }
 
   getAnnouncement(announcementId: number): Observable<Announcement> {

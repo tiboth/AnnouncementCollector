@@ -13,11 +13,11 @@ export class PreferenceComponent implements OnInit {
 
   sliderRefresh: EventEmitter<void> = new EventEmitter<void>();
 
-  minPrice = 50000;
-  maxPrice = 80000;
+  minPrice = 100;
+  maxPrice = 300;
   priceOptions: Options = {
-    floor: 10000,
-    ceil: 150000,
+    floor: 75,
+    ceil: 1000,
     translate: (value: number, label: LabelType): string => {
       switch (label) {
         case LabelType.Low:
