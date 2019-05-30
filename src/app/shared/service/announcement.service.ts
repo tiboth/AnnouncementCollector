@@ -13,9 +13,9 @@ export class AnnouncementService {
 
   getNext20Announcement(minPrice: number, maxPrice: number, nrRooms: number, isNew: boolean,
                         isOld: boolean, isSoldByOwner: boolean,
-                        isSoldByAgent: boolean, from: number): Observable<Array<AnnouncementDemo>> {
+                        isSoldByAgent: boolean, page: number): Observable<Array<AnnouncementDemo>> {
     // tslint:disable-next-line:max-line-length
-    const url = `${this.baseUrl}/announcement/${minPrice}/${maxPrice}/${nrRooms}/${isNew}/${isOld}/${isSoldByOwner}/${isSoldByAgent}/${from}`;
+    const url = `${this.baseUrl}/announcement/${minPrice}/${maxPrice}/${nrRooms}/${isNew}/${isOld}/${isSoldByOwner}/${isSoldByAgent}/${page}`;
     return this.httpClient.get<Array<AnnouncementDemo>>(url);
   }
 

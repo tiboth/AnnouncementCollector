@@ -35,7 +35,7 @@ import {AnnouncementDemo} from '../shared/model/announcement.demo';
 export class AnnouncementsComponent implements OnInit {
   sliderRefresh: EventEmitter<void> = new EventEmitter<void>();
   announcements = [];
-  nrAnnouncements = 0;
+  nrAnnouncements: number;
   announcementsFromCore: Array<AnnouncementDemo>;
   page = 1;
   minPrice = +localStorage.getItem('minPrice');
@@ -76,8 +76,7 @@ export class AnnouncementsComponent implements OnInit {
   isOwner = false;
   isAgent = false;
 
-  constructor(private utilService: UtilService, private announcementService: AnnouncementService) {
-  }
+  constructor(private utilService: UtilService, private announcementService: AnnouncementService) {  }
 
   ngOnInit() {
     this.optionList = [
@@ -128,9 +127,8 @@ export class AnnouncementsComponent implements OnInit {
     this.announcementService.getNrFound(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
       this.isOwner, this.isAgent)
       .subscribe(result => this.nrAnnouncements = result,
-        error => console.log(JSON.stringify(error)));
-
-    console.log('Nr received from core: ' + this.nrAnnouncements.toString());
+        error => console.log(JSON.stringify(error)),
+        () => console.log('Nr received from core: ' + this.nrAnnouncements));
 
     this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
        this.isOwner, this.isAgent, 0)
@@ -141,30 +139,20 @@ export class AnnouncementsComponent implements OnInit {
                                       if (this.likedList.indexOf(announcement.id) === -1) {
                                         // tslint:disable-next-line:max-line-length
                                         this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
-                                        console.log('url:' + announcement.firstImage);
                                       } else {
                                         // tslint:disable-next-line:max-line-length
                                         this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
                                     }}}));
-
-    // for (let i = 1; i <= 100; i++) {
-    //   if (this.deletedList.indexOf(i) === -1) {
-    //     if (this.likedList.indexOf(i) === -1) {
-    //       this.announcements.push({id: i, commentTitle: 'Announcement ' + i + ' commentTitle', like: false});
-    //     } else {
-    //       this.announcements.push({id: i, commentTitle: 'Announcement ' + i + ' commentTitle', like: true});
-    //     }
-    //   }
-    // }
   }
 
   onUpdatePreferencesClick() {
     this.announcementService.getNrFound(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
       this.isOwner, this.isAgent)
       .subscribe(result => this.nrAnnouncements = result,
-        error => console.log(JSON.stringify(error)));
-    console.log('Nr received from core: ' + this.nrAnnouncements.toString());
+        error => console.log(JSON.stringify(error)),
+        () => console.log('Nr received from core: ' + this.nrAnnouncements));
 
+    this.announcements = [];
     this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
       this.isOwner, this.isAgent, 0)
       .subscribe(result => this.announcementsFromCore = result,
@@ -252,21 +240,12 @@ export class AnnouncementsComponent implements OnInit {
         () => this.announcementsFromCore.forEach(announcement => {
           if (this.deletedList.indexOf(announcement.id) === -1) {
             if (this.likedList.indexOf(announcement.id) === -1) {
+              // tslint:disable-next-line:max-line-length
               this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
             } else {
               this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
             }}}));
     this.page = 1;
-
-    // for (let i = 1; i <= 100; i++) {
-    //   if (this.deletedList.indexOf(i) === -1) {
-    //     if (this.likedList.indexOf(i) === -1) {
-    //       this.announcements.push({id: i, commentTitle: 'Announcement ' + i + ' commentTitle', like: false});
-    //     } else {
-    //       this.announcements.push({id: i, commentTitle: 'Announcement ' + i + ' commentTitle', like: true});
-    //     }
-    //   }
-    // }
   }
 
   onOptionSelect() {
@@ -336,20 +315,21 @@ export class AnnouncementsComponent implements OnInit {
     this.page = page;
     window.scrollTo(0, 0);
 
-    // this.announcements = [];
+    this.announcements = [];
     // service call
     // call service
-    /*this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
-      this.isOld, this.isDetached, this.isSemiDetached, this.isOwner, this.isAgent, (page - 1) * 20)
+    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
+      this.isOld, this.isOwner, this.isAgent, this.page - 1)
       .subscribe(result => this.announcementsFromCore = result,
         error => console.log(JSON.stringify(error)),
         () => this.announcementsFromCore.forEach(announcement => {
           if (this.deletedList.indexOf(announcement.id) === -1) {
             if (this.likedList.indexOf(announcement.id) === -1) {
-              this.announcements.push({id: announcement.id, commentTitle: announcement.commentTitle, like: false});
+              // tslint:disable-next-line:max-line-length
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
             } else {
-              this.announcements.push({id: announcement.id, commentTitle: announcement.commentTitle, like: true});
-            }}})); */
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
+            }}}));
   }
 
 }
