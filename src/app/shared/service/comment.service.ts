@@ -5,18 +5,18 @@ import {Observable} from 'rxjs';
 
 @Injectable()
 export class CommentService {
-  private baseUrl = 'http://localhost:8080/licenta';
+  private baseUrl = 'http://localhost:8080/licenta/announcement';
 
   constructor(private httpClient: HttpClient) {}
 
   getAllCommentsForAnnouncement(announcementId: number): Observable<Array<Comment>> {
-    const url = `${this.baseUrl}/comments/${announcementId}`;
+    const url = `${this.baseUrl}/${announcementId}/comment`;
     return this.httpClient.get<Array<Comment>>(url);
   }
 
-  addCommentForAnnouncement(id: number, announcementId: number, title: string, description: string, date: Date): Observable<Comment> {
-    const url = `${this.baseUrl}/comments`;
-    const body = {announcementId, title, description, date};
+  addCommentForAnnouncement(announcementId: number, commentTitle: string, comment: string): Observable<Comment> {
+    const url = `${this.baseUrl}/${announcementId}/comment`;
+    const body = {announcementId, commentTitle, comment};
     return this.httpClient.post<Comment>(url, body);
   }
 }

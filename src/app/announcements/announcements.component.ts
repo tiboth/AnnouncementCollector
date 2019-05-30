@@ -150,9 +150,9 @@ export class AnnouncementsComponent implements OnInit {
     // for (let i = 1; i <= 100; i++) {
     //   if (this.deletedList.indexOf(i) === -1) {
     //     if (this.likedList.indexOf(i) === -1) {
-    //       this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: false});
+    //       this.announcements.push({id: i, commentTitle: 'Announcement ' + i + ' commentTitle', like: false});
     //     } else {
-    //       this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: true});
+    //       this.announcements.push({id: i, commentTitle: 'Announcement ' + i + ' commentTitle', like: true});
     //     }
     //   }
     // }
@@ -261,9 +261,9 @@ export class AnnouncementsComponent implements OnInit {
     // for (let i = 1; i <= 100; i++) {
     //   if (this.deletedList.indexOf(i) === -1) {
     //     if (this.likedList.indexOf(i) === -1) {
-    //       this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: false});
+    //       this.announcements.push({id: i, commentTitle: 'Announcement ' + i + ' commentTitle', like: false});
     //     } else {
-    //       this.announcements.push({id: i, title: 'Announcement ' + i + ' title', like: true});
+    //       this.announcements.push({id: i, commentTitle: 'Announcement ' + i + ' commentTitle', like: true});
     //     }
     //   }
     // }
@@ -346,9 +346,9 @@ export class AnnouncementsComponent implements OnInit {
         () => this.announcementsFromCore.forEach(announcement => {
           if (this.deletedList.indexOf(announcement.id) === -1) {
             if (this.likedList.indexOf(announcement.id) === -1) {
-              this.announcements.push({id: announcement.id, title: announcement.title, like: false});
+              this.announcements.push({id: announcement.id, commentTitle: announcement.commentTitle, like: false});
             } else {
-              this.announcements.push({id: announcement.id, title: announcement.title, like: true});
+              this.announcements.push({id: announcement.id, commentTitle: announcement.commentTitle, like: true});
             }}})); */
   }
 

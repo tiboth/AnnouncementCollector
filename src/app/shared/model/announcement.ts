@@ -2,7 +2,8 @@
 export class Announcement {
   id: number;
   title: string;
+  price: number;
   description: string;
-  images: Array<string>;
-  originalLink: string;
+  imageUrls: Array<string>;
+  link: string;
 }

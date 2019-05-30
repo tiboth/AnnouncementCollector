@@ -1,8 +1,8 @@
 
 export class Comment {
   id: number;
-  announcementId: number;
-  title: string;
-  description: string;
+  advertisementId: number;
+  commentTitle: string;
+  comment: string;
   date: Date;
 }
