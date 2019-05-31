@@ -138,10 +138,10 @@ export class AnnouncementsComponent implements OnInit {
                                     if (this.deletedList.indexOf(announcement.id) === -1) {
                                       if (this.likedList.indexOf(announcement.id) === -1) {
                                         // tslint:disable-next-line:max-line-length
-                                        this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
+                                        this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: false});
                                       } else {
                                         // tslint:disable-next-line:max-line-length
-                                        this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
+                                        this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: true});
                                     }}}));
   }
 
@@ -161,9 +161,9 @@ export class AnnouncementsComponent implements OnInit {
           if (this.deletedList.indexOf(announcement.id) === -1) {
             if (this.likedList.indexOf(announcement.id) === -1) {
               // tslint:disable-next-line:max-line-length
-              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: false});
             } else {
-              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: true});
             }}}));
     this.utilService.createToastrSuccsess('', 'Your preferences are updated.');
     this.findAnnouncements();
@@ -241,9 +241,9 @@ export class AnnouncementsComponent implements OnInit {
           if (this.deletedList.indexOf(announcement.id) === -1) {
             if (this.likedList.indexOf(announcement.id) === -1) {
               // tslint:disable-next-line:max-line-length
-              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: false});
             } else {
-              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: true});
             }}}));
     this.page = 1;
   }
@@ -326,9 +326,9 @@ export class AnnouncementsComponent implements OnInit {
           if (this.deletedList.indexOf(announcement.id) === -1) {
             if (this.likedList.indexOf(announcement.id) === -1) {
               // tslint:disable-next-line:max-line-length
-              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: false});
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: false});
             } else {
-              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, like: true});
+              this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: true});
             }}}));
   }
 
