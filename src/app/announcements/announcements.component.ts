@@ -66,15 +66,19 @@ export class AnnouncementsComponent implements OnInit {
   optionSettings = {};
   selectedOptions = [];
 
+  optionList2 = [];
+  optionSettings2 = {};
+  selectedOptions2 = [];
+
   likedList = [];
   deletedList = [];
 
   isNew = false;
   isOld = false;
-  isDetached = false;
-  isSemiDetached = false;
   isOwner = false;
   isAgent = false;
+
+  sortBy = false;
 
   constructor(private utilService: UtilService, private announcementService: AnnouncementService) {  }
 
@@ -82,10 +86,8 @@ export class AnnouncementsComponent implements OnInit {
     this.optionList = [
       { id: 1, itemName: 'New buildings(>2000)' },
       { id: 2, itemName: 'Old buildings(<2000)' },
-      { id: 3, itemName: 'Detached' },
-      { id: 4, itemName: 'Semi detached' },
-      { id: 5, itemName: 'Sell by owner' },
-      { id: 6, itemName: 'Sell by real estate agent' }
+      { id: 3, itemName: 'Sell by owner' },
+      { id: 4, itemName: 'Sell by real estate agent' }
     ];
 
     if (localStorage.getItem('newBuilding') === '1') {
@@ -96,20 +98,12 @@ export class AnnouncementsComponent implements OnInit {
       this.selectedOptions.push({id: 2, itemName: 'Old buildings(<2000)'});
       this.isOld = true;
     }
-    if (localStorage.getItem('detached') === '1') {
-      this.selectedOptions.push({id: 3, itemName: 'Detached'});
-      this.isDetached = true;
-    }
-    if (localStorage.getItem('semiDetached') === '1') {
-      this.selectedOptions.push({id: 4, itemName: 'Semi detached'});
-      this.isSemiDetached = true;
-    }
     if (localStorage.getItem('owner') === '1') {
-      this.selectedOptions.push({id: 5, itemName: 'Sell by owner'});
+      this.selectedOptions.push({id: 3, itemName: 'Sell by owner'});
       this.isOwner = true;
     }
     if (localStorage.getItem('agent') === '1') {
-      this.selectedOptions.push({ id: 6, itemName: 'Sell by real estate agent' });
+      this.selectedOptions.push({ id: 4, itemName: 'Sell by real estate agent' });
       this.isAgent = true;
     }
 
@@ -118,6 +112,25 @@ export class AnnouncementsComponent implements OnInit {
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       enableSearchFilter: true
+    };
+
+    this.optionList2 = [
+      { id: 1, itemName: 'Sort by price.' },
+      { id: 2, itemName: 'Sort by date.' },
+    ];
+
+    if (localStorage.getItem('sortByPrice') === '1') {
+      this.selectedOptions2.push({id: 1, itemName: 'Sort by price.'});
+      this.sortBy  = true;
+    }
+    if (localStorage.getItem('sortByDate') === '1') {
+      this.selectedOptions2.push({id: 2, itemName: 'Sort by date.'});
+      this.sortBy = false;
+    }
+
+    this.optionSettings2 = {
+      text: 'Sort announcements',
+      singleSelection: true
     };
 
     this.likedList = JSON.parse(localStorage.getItem('likedList'));
@@ -131,7 +144,7 @@ export class AnnouncementsComponent implements OnInit {
         () => console.log('Nr received from core: ' + this.nrAnnouncements));
 
     this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
-       this.isOwner, this.isAgent, 0)
+       this.isOwner, this.isAgent, 0, this.sortBy)
       .subscribe(result => this.announcementsFromCore = result,
                   error => console.log(JSON.stringify(error)),
                   () => this.announcementsFromCore.forEach(announcement => {
@@ -154,7 +167,7 @@ export class AnnouncementsComponent implements OnInit {
 
     this.announcements = [];
     this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
-      this.isOwner, this.isAgent, 0)
+      this.isOwner, this.isAgent, 0, this.sortBy)
       .subscribe(result => this.announcementsFromCore = result,
         error => console.log(JSON.stringify(error)),
         () => this.announcementsFromCore.forEach(announcement => {
@@ -163,6 +176,7 @@ export class AnnouncementsComponent implements OnInit {
               // tslint:disable-next-line:max-line-length
               this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: false});
             } else {
+              // tslint:disable-next-line:max-line-length
               this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: true});
             }}}));
     this.utilService.createToastrSuccsess('', 'Your preferences are updated.');
@@ -183,15 +197,14 @@ export class AnnouncementsComponent implements OnInit {
 
     localStorage.setItem('newBuilding', '0');
     localStorage.setItem('oldBuilding', '0');
-    localStorage.setItem('detached', '0');
-    localStorage.setItem('semiDetached', '0');
     localStorage.setItem('owner', '0');
     localStorage.setItem('agent', '0');
 
+    localStorage.setItem('sortByPrice', '0');
+    localStorage.setItem('sortByDate', '0');
+
     this.isNew = false;
     this.isOld = false;
-    this.isDetached = false;
-    this.isSemiDetached = false;
     this.isOwner = false;
     this.isAgent = false;
 
@@ -208,14 +221,6 @@ export class AnnouncementsComponent implements OnInit {
           localStorage.setItem('oldBuilding', '1');
           this.isOld = true;
           break;
-        case 'Detached':
-          localStorage.setItem('detached', '1');
-          this.isDetached = true;
-          break;
-        case 'Semi detached':
-          localStorage.setItem('semiDetached', '1');
-          this.isSemiDetached = true;
-          break;
         case 'Sell by owner':
           localStorage.setItem('owner', '1');
           this.isOwner = true;
@@ -227,6 +232,19 @@ export class AnnouncementsComponent implements OnInit {
       }
     });
 
+    this.selectedOptions2.forEach(option => {
+      switch (option.itemName) {
+        case ('Sort by price.'):
+          localStorage.setItem('sortByPrice', '1');
+          this.sortBy = true;
+          break;
+        case ('Sort by date.'):
+          localStorage.setItem('sortByDate', '1');
+          this.sortBy = false;
+          break;
+      }
+    });
+
     this.likedList = JSON.parse(localStorage.getItem('likedList'));
     this.deletedList = JSON.parse(localStorage.getItem('deletedList'));
     this.announcements = [];
@@ -234,7 +252,7 @@ export class AnnouncementsComponent implements OnInit {
 
     // call service
     this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
-      this.isOld, this.isOwner, this.isAgent, 0)
+      this.isOld, this.isOwner, this.isAgent, 0, this.sortBy)
       .subscribe(result => this.announcementsFromCore = result,
         error => console.log(JSON.stringify(error)),
         () => this.announcementsFromCore.forEach(announcement => {
@@ -243,6 +261,7 @@ export class AnnouncementsComponent implements OnInit {
               // tslint:disable-next-line:max-line-length
               this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: false});
             } else {
+              // tslint:disable-next-line:max-line-length
               this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: true});
             }}}));
     this.page = 1;
@@ -276,18 +295,23 @@ export class AnnouncementsComponent implements OnInit {
     if (localStorage.getItem('oldBuilding') === '1') {
       this.selectedOptions.push({id: 2, itemName: 'Old buildings(<2000)'});
     }
-    if (localStorage.getItem('detached') === '1') {
-      this.selectedOptions.push({id: 3, itemName: 'Detached'});
-    }
-    if (localStorage.getItem('semiDetached') === '1') {
-      this.selectedOptions.push({id: 4, itemName: 'Semi detached'});
-    }
     if (localStorage.getItem('owner') === '1') {
-      this.selectedOptions.push({id: 5, itemName: 'Sell by owner'});
+      this.selectedOptions.push({id: 3, itemName: 'Sell by owner'});
     }
     if (localStorage.getItem('agent') === '1') {
-      this.selectedOptions.push({ id: 6, itemName: 'Sell by real estate agent' });
+      this.selectedOptions.push({ id: 4, itemName: 'Sell by real estate agent' });
     }
+
+    this.selectedOptions2 = [];
+    if (localStorage.getItem('sortByPrice') === '1') {
+      this.selectedOptions2.push({id: 1, itemName: 'Sort by price.'});
+    }
+    if (localStorage.getItem('sortByDate') === '1') {
+      this.selectedOptions2.push({id: 2, itemName: 'Sort by date.'});
+    }
+    console.log('itt');
+    console.log('selectedOptions:' + this.selectedOptions);
+    console.log('selectedOptions2:' + this.selectedOptions2);
   }
 
   likeAnnouncement(id: number) {
@@ -319,7 +343,7 @@ export class AnnouncementsComponent implements OnInit {
     // service call
     // call service
     this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
-      this.isOld, this.isOwner, this.isAgent, this.page - 1)
+      this.isOld, this.isOwner, this.isAgent, this.page - 1, this.sortBy)
       .subscribe(result => this.announcementsFromCore = result,
         error => console.log(JSON.stringify(error)),
         () => this.announcementsFromCore.forEach(announcement => {
@@ -328,6 +352,7 @@ export class AnnouncementsComponent implements OnInit {
               // tslint:disable-next-line:max-line-length
               this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: false});
             } else {
+              // tslint:disable-next-line:max-line-length
               this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: true});
             }}}));
   }

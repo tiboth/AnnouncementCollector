@@ -31,6 +31,7 @@ import {UtilService} from './shared/service/util.service';
 import {AnnouncementService} from './shared/service/announcement.service';
 import {CommentService} from './shared/service/comment.service';
 import {HttpClientModule} from '@angular/common/http';
+import {PriceFluctuationService} from './shared/service/price-fluctuation.service';
 
 
 @NgModule({
@@ -74,6 +75,7 @@ import {HttpClientModule} from '@angular/common/http';
     UtilService,
     AnnouncementService,
     CommentService,
+    PriceFluctuationService
   ],
   bootstrap: [AppComponent]
 })

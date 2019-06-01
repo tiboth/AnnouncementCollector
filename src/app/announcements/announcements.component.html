@@ -23,13 +23,28 @@
         </div>
       </div>
       <div class="row" style="margin-top: 15px">
-        <div class="col-sm">Select number of rooms:</div>
+        <div class="col-sm">Select options:</div>
         <div class="col-sm">
           <angular2-multiselect [data]="optionList"
                                 name="dropdown"
                                 required
                                 [(ngModel)]="selectedOptions"
                                 [settings]="optionSettings"
+                                (onSelect)="onOptionSelect()"
+                                (onDeSelect)="OnOptionDeSelect()"
+                                (onSelectAll)="onSelectAllOptions()"
+                                (onDeSelectAll)="onDeSelectAllOptions()">
+          </angular2-multiselect>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 15px">
+        <div class="col-sm">Sort by:</div>
+        <div class="col-sm">
+          <angular2-multiselect [data]="optionList2"
+                                name="dropdown2"
+                                required
+                                [(ngModel)]="selectedOptions2"
+                                [settings]="optionSettings2"
                                 (onSelect)="onOptionSelect()"
                                 (onDeSelect)="OnOptionDeSelect()"
                                 (onSelectAll)="onSelectAllOptions()"

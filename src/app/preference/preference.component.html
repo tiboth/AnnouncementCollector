@@ -9,7 +9,9 @@
         </div>
       </div>
       <div class="row" style="margin-top: 100px;">
-        <button type="button" class="btn btn-outline-success col-2 ml-auto mt-3 mr-1" (click)="refreshSlider()" awNextStep>Next</button>
+        <button type="button" class="btn btn-outline-success col-2 ml-auto mt-3 mr-1" (click)="refreshSlider()"
+                awNextStep>Next
+        </button>
       </div>
     </aw-wizard-step>
     <aw-wizard-step stepTitle="Number of rooms"
@@ -33,6 +35,27 @@
                                 required
                                 [(ngModel)]="selectedOptions"
                                 [settings]="optionSettings"
+                                (onSelect)="onOptionSelect()"
+                                (onDeSelect)="OnOptionDeSelect()"
+                                (onSelectAll)="onSelectAllOptions()"
+                                (onDeSelectAll)="onDeSelectAllOptions()">
+          </angular2-multiselect>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 100px;">
+        <button type="button" class="btn btn-outline-secondary col-2 mr-auto" awPreviousStep>Previous</button>
+        <button type="button" class="btn btn-outline-success col-2 ml-auto" awNextStep> Next</button>
+      </div>
+    </aw-wizard-step>
+    <aw-wizard-step stepTitle="Options"
+                    [navigationSymbol]="{ symbol: '&#xf0dc;', fontFamily: 'FontAwesome' }">
+      <div class="row justify-content-center">
+        <div class="col-sm-5 mt-5">
+          <angular2-multiselect [data]="optionList2"
+                                name="dropdown"
+                                required
+                                [(ngModel)]="selectedOptions2"
+                                [settings]="optionSettings2"
                                 (onSelect)="onOptionSelect()"
                                 (onDeSelect)="OnOptionDeSelect()"
                                 (onSelectAll)="onSelectAllOptions()"

@@ -37,6 +37,10 @@ export class PreferenceComponent implements OnInit {
   optionSettings = {};
   selectedOptions = [];
 
+  optionList2 = [];
+  optionSettings2 = {};
+  selectedOptions2 = [];
+
   constructor(private router: Router, private utilService: UtilService) {
   }
 
@@ -50,16 +54,25 @@ export class PreferenceComponent implements OnInit {
     this.optionList = [
       {id: 1, itemName: 'New buildings(>2000)'},
       {id: 2, itemName: 'Old buildings(<2000)'},
-      {id: 3, itemName: 'Detached'},
-      {id: 4, itemName: 'Semi detached'},
-      {id: 5, itemName: 'Sell by owner'},
-      {id: 6, itemName: 'Sell by real estate agent'}
+      {id: 3, itemName: 'Sell by owner'},
+      {id: 4, itemName: 'Sell by real estate agent'}
     ];
     this.optionSettings = {
       text: 'Select options',
       selectAllText: 'Select All',
       unSelectAllText: 'UnSelect All',
       enableSearchFilter: true
+    };
+    this.optionList2 = [
+      {id: 1, itemName: 'Sort by price.'},
+      {id: 2, itemName: 'Sort by date.'},
+    ];
+
+    this.selectedOptions2.push({id: 2, itemName: 'Sort by date.'});
+
+    this.optionSettings2 = {
+      text: 'Sort announcements',
+      singleSelection: true
     };
   }
 
@@ -84,10 +97,11 @@ export class PreferenceComponent implements OnInit {
 
     localStorage.setItem('newBuilding', '0');
     localStorage.setItem('oldBuilding', '0');
-    localStorage.setItem('detached', '0');
-    localStorage.setItem('semiDetached', '0');
     localStorage.setItem('owner', '0');
     localStorage.setItem('agent', '0');
+
+    localStorage.setItem('sortByPrice', '0');
+    localStorage.setItem('sortByDate', '0');
 
     this.selectedOptions.forEach(option => {
         switch (option.itemName) {
@@ -97,17 +111,22 @@ export class PreferenceComponent implements OnInit {
           case 'Old buildings(<2000)':
             localStorage.setItem('oldBuilding', '1');
             break;
-          case 'Detached':
-            localStorage.setItem('detached', '1');
-            break;
-          case 'Semi detached':
-            localStorage.setItem('semiDetached', '1');
-            break;
           case 'Sell by owner':
             localStorage.setItem('owner', '1');
             break;
           case 'Sell by real estate agent':
             localStorage.setItem('agent', '1');
+            break;
+        }
+      }
+    );
+    this.selectedOptions2.forEach(option => {
+        switch (option.itemName) {
+          case ('Sort by price.'):
+            localStorage.setItem('sortByPrice', '1');
+            break;
+          case 'Sort by date.':
+            localStorage.setItem('sortByDate', '1');
             break;
         }
       }
