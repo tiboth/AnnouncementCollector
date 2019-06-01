@@ -4,6 +4,7 @@ import {Comment} from '../shared/model/comment';
 import {Announcement} from '../shared/model/announcement';
 import {AnnouncementService} from '../shared/service/announcement.service';
 import {CommentService} from '../shared/service/comment.service';
+import {WebSocketService} from "../shared/service/websocket.service";
 
 @Component({
   selector: 'app-announcement',
@@ -23,7 +24,7 @@ export class AnnouncementComponent implements OnInit {
   c2: Comment; // delete me
   c3: Comment; // delete me
 
-  constructor(private route: ActivatedRoute, private announcementService: AnnouncementService, private commentService: CommentService) {
+  constructor(private route: ActivatedRoute, private announcementService: AnnouncementService, private commentService: CommentService, private webSocketService: WebSocketService) {
     window.scrollTo(0, 0);
     this.announcementId = this.route.snapshot.params.id;
     console.log('Getting announcement with id=' + this.announcementId + '...');
@@ -38,6 +39,17 @@ export class AnnouncementComponent implements OnInit {
       .subscribe(result => this.commentsForAnnouncement = result,
         error => console.log(JSON.stringify(error)));
 
+    let stompClient = this.webSocketService.connect();
+
+    stompClient.connect({}, frame => {
+
+      stompClient.subscribe('/comment', notifications => {
+        console.log(notifications);
+        this.commentsForAnnouncement = JSON.parse(notifications.body);
+
+      })
+
+    });
     // for test
     // this.c1 = new Comment();
     // this.c1.commentTitle = 'Title 1';
