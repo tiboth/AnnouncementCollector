@@ -4,7 +4,8 @@ import {Comment} from '../shared/model/comment';
 import {Announcement} from '../shared/model/announcement';
 import {AnnouncementService} from '../shared/service/announcement.service';
 import {CommentService} from '../shared/service/comment.service';
-import {WebSocketService} from "../shared/service/websocket.service";
+import {WebSocketService} from '../shared/service/websocket.service';
+import {NgForm} from '@angular/forms';
 
 @Component({
   selector: 'app-announcement',
@@ -39,7 +40,7 @@ export class AnnouncementComponent implements OnInit {
       .subscribe(result => this.commentsForAnnouncement = result,
         error => console.log(JSON.stringify(error)));
 
-    let stompClient = this.webSocketService.connect();
+    const stompClient = this.webSocketService.connect();
 
     stompClient.connect({}, frame => {
 
@@ -47,51 +48,22 @@ export class AnnouncementComponent implements OnInit {
         console.log(notifications);
         this.commentsForAnnouncement = JSON.parse(notifications.body);
 
-      })
-
+      });
     });
-    // for test
-    // this.c1 = new Comment();
-    // this.c1.commentTitle = 'Title 1';
-    // this.c1.comment = 'Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo\n' +
-    //   '              accumsan, sed semper nisi sollicitudin. Curabitur purus sem, malesuada eu luctus eget, suscipit sed\n' +
-    //   '              turpis. Nam pellentesque felis vitae justo\n' +
-    //   '              accumsan, sed semper nisi sollicitudin. Curabitur purus sem, malesuada eu luctus eget, suscipit sed\n' +
-    //   '              turpis. Nam pellentesque felis vitae justo\n' +
-    //   '              accumsan, sed semper nisi sollicitudin';
-    // this.c1.date = new Date('2019-05-03');
-    //
-    // this.c2 = new Comment();
-    // this.c2.commentTitle = 'Title 2';
-    // this.c2.comment = 'Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo\n' +
-    //   '              accumsan, sed semper nisi sollicitudin. Curabitur purus sem, malesuada eu luctus eget, suscipit sed\n' +
-    //   '              turpis.';
-    // this.c2.date = new Date('2018-03-09');
-    //
-    // this.c3 = new Comment();
-    // this.c3.commentTitle = 'Title 3';
-    // this.c3.comment = 'Curabitur purus sem, malesuada eu luctus eget, suscipit sed turpis. Nam pellentesque felis vitae justo\n' +
-    //   '              accumsan, sed semper nisi sollicitudin. Curabitur purus sem, malesuada eu luctus eget, suscipit sed\n' +
-    //   '              turpis. Nam pellentesque felis vitae justo ' +
-    //   '              accumsan, sed semper nisi sollicitudin';
-    // this.c3.date = new Date('2019-02-26');
-    //
-    // this.commentsForAnnouncement = new Array<Comment>();
-    // this.commentsForAnnouncement.push(this.c1);
-    // this.commentsForAnnouncement.push(this.c2);
-    // this.commentsForAnnouncement.push(this.c3);
   }
 
   ngOnInit() {
   }
 
-  onAddComment() {
+  onAddComment(formControl: NgForm) {
     console.log('adding comment: ');
     console.log(this.comment.commentTitle);
     console.log(this.comment.comment);
 
     this.commentService.addCommentForAnnouncement(this.announcementId, this.comment.commentTitle, this.comment.comment)
-      .subscribe(result => this.commentsForAnnouncement.push(result),
+      .subscribe(result => console.log('comment added'),
         error => console.log(JSON.stringify(error)));
+
+    formControl.reset();
   }
 }
