@@ -44,7 +44,7 @@ export class AnnouncementComponent implements OnInit {
 
     stompClient.connect({}, frame => {
 
-      stompClient.subscribe('/comment', notifications => {
+      stompClient.subscribe( '/comment/' + this.announcementId, notifications => {
         console.log(notifications);
         this.commentsForAnnouncement = JSON.parse(notifications.body);
 
