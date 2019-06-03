@@ -1,10 +1,11 @@
-import {Component, ElementRef, EventEmitter, OnInit} from '@angular/core';
+import {Component, EventEmitter, OnInit} from '@angular/core';
 import {LabelType, Options} from 'ng5-slider';
 import {UtilService} from '../shared/service/util.service';
-import { trigger, style, transition, animate, keyframes, query, stagger} from '@angular/animations';
+import {animate, keyframes, query, stagger, style, transition, trigger} from '@angular/animations';
 import {AnnouncementService} from '../shared/service/announcement.service';
-import {Announcement} from '../shared/model/announcement';
 import {AnnouncementDemo} from '../shared/model/announcement.demo';
+import {ConstructionYear} from '../shared/model/enum/contruction.year';
+import {Distributor} from '../shared/model/enum/distributor';
 
 @Component({
   selector: 'app-announcements',
@@ -73,10 +74,8 @@ export class AnnouncementsComponent implements OnInit {
   likedList = [];
   deletedList = [];
 
-  isNew = false;
-  isOld = false;
-  isOwner = false;
-  isAgent = false;
+  constructionYear = ConstructionYear.EMPTY;
+  distributor = Distributor.EMPTY;
 
   sortBy = false;
 
@@ -92,19 +91,19 @@ export class AnnouncementsComponent implements OnInit {
 
     if (localStorage.getItem('newBuilding') === '1') {
       this.selectedOptions.push({id: 1, itemName: 'New buildings(>2000)'});
-      this.isNew  = true;
+      this.constructionYear = ConstructionYear.AFTER;
     }
     if (localStorage.getItem('oldBuilding') === '1') {
       this.selectedOptions.push({id: 2, itemName: 'Old buildings(<2000)'});
-      this.isOld = true;
+      this.constructionYear = ConstructionYear.BEFORE;
     }
     if (localStorage.getItem('owner') === '1') {
       this.selectedOptions.push({id: 3, itemName: 'Sell by owner'});
-      this.isOwner = true;
+      this.distributor = Distributor.PROPRIETAR;
     }
     if (localStorage.getItem('agent') === '1') {
       this.selectedOptions.push({ id: 4, itemName: 'Sell by real estate agent' });
-      this.isAgent = true;
+      this.distributor = Distributor.AGENTIE;
     }
 
     this.optionSettings = {
@@ -137,14 +136,13 @@ export class AnnouncementsComponent implements OnInit {
     this.deletedList = JSON.parse(localStorage.getItem('deletedList'));
 
     // service call
-    this.announcementService.getNrFound(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
-      this.isOwner, this.isAgent)
+    this.announcementService.getNrFound(this.minPrice, this.maxPrice, this.nrRooms, this.constructionYear, this.distributor)
       .subscribe(result => this.nrAnnouncements = result,
         error => console.log(JSON.stringify(error)),
         () => console.log('Nr received from core: ' + this.nrAnnouncements));
 
-    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
-       this.isOwner, this.isAgent, 0, this.sortBy)
+    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.constructionYear, this.distributor,
+      0, this.sortBy)
       .subscribe(result => this.announcementsFromCore = result,
                   error => console.log(JSON.stringify(error)),
                   () => this.announcementsFromCore.forEach(announcement => {
@@ -159,15 +157,15 @@ export class AnnouncementsComponent implements OnInit {
   }
 
   onUpdatePreferencesClick() {
-    this.announcementService.getNrFound(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
-      this.isOwner, this.isAgent)
+    this.findAnnouncements();
+    this.announcementService.getNrFound(this.minPrice, this.maxPrice, this.nrRooms, this.constructionYear, this.distributor)
       .subscribe(result => this.nrAnnouncements = result,
         error => console.log(JSON.stringify(error)),
         () => console.log('Nr received from core: ' + this.nrAnnouncements));
 
     this.announcements = [];
-    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew, this.isOld,
-      this.isOwner, this.isAgent, 0, this.sortBy)
+    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.constructionYear, this.distributor,
+      0, this.sortBy)
       .subscribe(result => this.announcementsFromCore = result,
         error => console.log(JSON.stringify(error)),
         () => this.announcementsFromCore.forEach(announcement => {
@@ -180,7 +178,6 @@ export class AnnouncementsComponent implements OnInit {
               this.announcements.push({id: announcement.id, title: announcement.title, image: announcement.firstImage, price: announcement.price, like: true});
             }}}));
     this.utilService.createToastrSuccsess('', 'Your preferences are updated.');
-    this.findAnnouncements();
   }
 
   findAnnouncements() {
@@ -203,10 +200,8 @@ export class AnnouncementsComponent implements OnInit {
     localStorage.setItem('sortByPrice', '0');
     localStorage.setItem('sortByDate', '0');
 
-    this.isNew = false;
-    this.isOld = false;
-    this.isOwner = false;
-    this.isAgent = false;
+    this.constructionYear = ConstructionYear.EMPTY;
+    this.distributor = Distributor.EMPTY;
 
     localStorage.setItem('likedList', JSON.stringify([]));
     localStorage.setItem('deletedList', JSON.stringify([]));
@@ -215,19 +210,19 @@ export class AnnouncementsComponent implements OnInit {
       switch (option.itemName) {
         case ('New buildings(>2000)'):
           localStorage.setItem('newBuilding', '1');
-          this.isNew = true;
+          this.constructionYear = ConstructionYear.AFTER;
           break;
         case 'Old buildings(<2000)':
           localStorage.setItem('oldBuilding', '1');
-          this.isOld = true;
+          this.constructionYear = ConstructionYear.BEFORE;
           break;
         case 'Sell by owner':
           localStorage.setItem('owner', '1');
-          this.isOwner = true;
+          this.distributor = Distributor.PROPRIETAR;
           break;
         case 'Sell by real estate agent':
           localStorage.setItem('agent', '1');
-          this.isAgent = true;
+          this.distributor = Distributor.AGENTIE;
           break;
       }
     });
@@ -251,8 +246,8 @@ export class AnnouncementsComponent implements OnInit {
     this.page = 0;
 
     // call service
-    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
-      this.isOld, this.isOwner, this.isAgent, 0, this.sortBy)
+    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.constructionYear, this.distributor,
+      0, this.sortBy)
       .subscribe(result => this.announcementsFromCore = result,
         error => console.log(JSON.stringify(error)),
         () => this.announcementsFromCore.forEach(announcement => {
@@ -309,9 +304,6 @@ export class AnnouncementsComponent implements OnInit {
     if (localStorage.getItem('sortByDate') === '1') {
       this.selectedOptions2.push({id: 2, itemName: 'Sort by date.'});
     }
-    console.log('itt');
-    console.log('selectedOptions:' + this.selectedOptions);
-    console.log('selectedOptions2:' + this.selectedOptions2);
   }
 
   likeAnnouncement(id: number) {
@@ -342,8 +334,8 @@ export class AnnouncementsComponent implements OnInit {
     this.announcements = [];
     // service call
     // call service
-    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.isNew,
-      this.isOld, this.isOwner, this.isAgent, this.page - 1, this.sortBy)
+    this.announcementService.getNext20Announcement(this.minPrice, this.maxPrice, this.nrRooms, this.constructionYear, this.distributor,
+      this.page - 1, this.sortBy)
       .subscribe(result => this.announcementsFromCore = result,
         error => console.log(JSON.stringify(error)),
         () => this.announcementsFromCore.forEach(announcement => {
