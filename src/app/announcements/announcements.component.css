@@ -3,6 +3,10 @@
   border: 0;
 }
 
+.announcement:hover {
+  cursor: pointer;
+}
+
 .fa-thumbs-up:hover {
   color: green;
   cursor: pointer;
