@@ -30,7 +30,7 @@ export class Statistic2Component implements OnInit {
       this.constructionYear = 'Before';
     }
     if (localStorage.getItem('owner') === '1') {
-      this.distributor = 'Owner';
+      this.distributor = 'Proprietar';
     }
     if (localStorage.getItem('agent') === '1') {
       this.distributor = 'Agentie';
