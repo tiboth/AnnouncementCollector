@@ -33,9 +33,15 @@ export class PreferenceComponent implements OnInit {
   nrRooms = 1;
   roomOptions2: Options;
 
-  optionList = [];
-  optionSettings = {};
-  selectedOptions = [];
+  // year
+  optionList1 = [];
+  optionSettings1 = {};
+  selectedOptions1 = [];
+
+  // distributor
+  optionList3 = [];
+  optionSettings3 = {};
+  selectedOptions3 = [];
 
   optionList2 = [];
   optionSettings2 = {};
@@ -51,18 +57,26 @@ export class PreferenceComponent implements OnInit {
       showTicks: true
     };
     console.log(this.roomOptions2);
-    this.optionList = [
+
+    this.optionList1 = [
       {id: 1, itemName: 'New buildings(>2000)'},
       {id: 2, itemName: 'Old buildings(<2000)'},
+    ];
+    this.optionSettings1 = {
+      text: 'Select construction year',
+      limitSelection: 1
+    };
+
+    this.optionList3 = [
       {id: 3, itemName: 'Sell by owner'},
       {id: 4, itemName: 'Sell by real estate agent'}
     ];
-    this.optionSettings = {
-      text: 'Select options',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableSearchFilter: true
+    this.selectedOptions3.push({id: 4, itemName: 'Sell by real estate agent'});
+    this.optionSettings3 = {
+      text: 'Select distributor',
+      singleSelection: true
     };
+
     this.optionList2 = [
       {id: 1, itemName: 'Sort by price.'},
       {id: 2, itemName: 'Sort by date.'},
@@ -72,7 +86,7 @@ export class PreferenceComponent implements OnInit {
 
     this.optionSettings2 = {
       text: 'Sort announcements',
-      singleSelection: true
+      singleSelection: true,
     };
   }
 
@@ -103,7 +117,7 @@ export class PreferenceComponent implements OnInit {
     localStorage.setItem('sortByPrice', '0');
     localStorage.setItem('sortByDate', '0');
 
-    this.selectedOptions.forEach(option => {
+    this.selectedOptions1.forEach(option => {
         switch (option.itemName) {
           case ('New buildings(>2000)'):
             localStorage.setItem('newBuilding', '1');
@@ -111,6 +125,11 @@ export class PreferenceComponent implements OnInit {
           case 'Old buildings(<2000)':
             localStorage.setItem('oldBuilding', '1');
             break;
+        }
+      }
+    );
+    this.selectedOptions3.forEach(option => {
+        switch (option.itemName) {
           case 'Sell by owner':
             localStorage.setItem('owner', '1');
             break;

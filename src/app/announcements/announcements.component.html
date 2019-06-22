@@ -22,14 +22,29 @@
           <ng5-slider [(value)]="nrRooms" [options]="roomOptions" [manualRefresh]="sliderRefresh"></ng5-slider>
         </div>
       </div>
-      <div class="row" style="margin-top: 15px">
-        <div class="col-sm">Select options:</div>
+      <div class="row" style="margin-top: 15px; height: 45px">
+        <div class="col-sm">Select construction year:</div>
         <div class="col-sm">
-          <angular2-multiselect [data]="optionList"
-                                name="dropdown"
+          <angular2-multiselect [data]="optionList1"
+                                name="dropdown1"
                                 required
-                                [(ngModel)]="selectedOptions"
-                                [settings]="optionSettings"
+                                [(ngModel)]="selectedOptions1"
+                                [settings]="optionSettings1"
+                                (onSelect)="onOptionSelect()"
+                                (onDeSelect)="OnOptionDeSelect()"
+                                (onSelectAll)="onSelectAllOptions()"
+                                (onDeSelectAll)="onDeSelectAllOptions()">
+          </angular2-multiselect>
+        </div>
+      </div>
+      <div class="row" style="margin-top: 15px">
+        <div class="col-sm">Select distributor:</div>
+        <div class="col-sm">
+          <angular2-multiselect [data]="optionList3"
+                                name="dropdown3"
+                                required
+                                [(ngModel)]="selectedOptions3"
+                                [settings]="optionSettings3"
                                 (onSelect)="onOptionSelect()"
                                 (onDeSelect)="OnOptionDeSelect()"
                                 (onSelectAll)="onSelectAllOptions()"

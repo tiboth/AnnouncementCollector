@@ -63,9 +63,15 @@ export class AnnouncementsComponent implements OnInit {
     showTicks: true,
   };
 
-  optionList = [];
-  optionSettings = {};
-  selectedOptions = [];
+  // construction year
+  optionList1 = [];
+  optionSettings1 = {};
+  selectedOptions1 = [];
+
+  // distributor
+  optionList3 = [];
+  optionSettings3 = {};
+  selectedOptions3 = [];
 
   optionList2 = [];
   optionSettings2 = {};
@@ -82,35 +88,41 @@ export class AnnouncementsComponent implements OnInit {
   constructor(private utilService: UtilService, private announcementService: AnnouncementService) {  }
 
   ngOnInit() {
-    this.optionList = [
+    this.optionList1 = [
       { id: 1, itemName: 'New buildings(>2000)' },
       { id: 2, itemName: 'Old buildings(<2000)' },
+    ];
+
+    this.optionList3 = [
       { id: 3, itemName: 'Sell by owner' },
       { id: 4, itemName: 'Sell by real estate agent' }
     ];
 
     if (localStorage.getItem('newBuilding') === '1') {
-      this.selectedOptions.push({id: 1, itemName: 'New buildings(>2000)'});
+      this.selectedOptions1.push({id: 1, itemName: 'New buildings(>2000)'});
       this.constructionYear = ConstructionYear.AFTER;
     }
     if (localStorage.getItem('oldBuilding') === '1') {
-      this.selectedOptions.push({id: 2, itemName: 'Old buildings(<2000)'});
+      this.selectedOptions1.push({id: 2, itemName: 'Old buildings(<2000)'});
       this.constructionYear = ConstructionYear.BEFORE;
     }
     if (localStorage.getItem('owner') === '1') {
-      this.selectedOptions.push({id: 3, itemName: 'Sell by owner'});
+      this.selectedOptions3.push({id: 3, itemName: 'Sell by owner'});
       this.distributor = Distributor.PROPRIETAR;
     }
     if (localStorage.getItem('agent') === '1') {
-      this.selectedOptions.push({ id: 4, itemName: 'Sell by real estate agent' });
+      this.selectedOptions3.push({ id: 4, itemName: 'Sell by real estate agent' });
       this.distributor = Distributor.AGENTIE;
     }
 
-    this.optionSettings = {
-      text: 'Select options',
-      selectAllText: 'Select All',
-      unSelectAllText: 'UnSelect All',
-      enableSearchFilter: true
+    this.optionSettings1 = {
+      text: 'Select construction year',
+      limitSelection: 1
+    };
+
+    this.optionSettings3 = {
+      text: 'Select distributor',
+      singleSelection: true
     };
 
     this.optionList2 = [
@@ -185,7 +197,8 @@ export class AnnouncementsComponent implements OnInit {
     console.log('Max price:' + this.maxPrice);
     console.log('Nr rooms:' + this.nrRooms);
 
-    this.selectedOptions.forEach(option => console.log(option.itemName));
+    this.selectedOptions1.forEach(option => console.log(option.itemName));
+    this.selectedOptions3.forEach(option => console.log(option.itemName));
 
     localStorage.setItem('arePreferencesSet', '1');
     localStorage.setItem('minPrice', this.minPrice.toString());
@@ -206,7 +219,7 @@ export class AnnouncementsComponent implements OnInit {
     localStorage.setItem('likedList', JSON.stringify([]));
     localStorage.setItem('deletedList', JSON.stringify([]));
 
-    this.selectedOptions.forEach(option => {
+    this.selectedOptions1.forEach(option => {
       switch (option.itemName) {
         case ('New buildings(>2000)'):
           localStorage.setItem('newBuilding', '1');
@@ -216,6 +229,11 @@ export class AnnouncementsComponent implements OnInit {
           localStorage.setItem('oldBuilding', '1');
           this.constructionYear = ConstructionYear.BEFORE;
           break;
+      }
+    });
+
+    this.selectedOptions3.forEach(option => {
+      switch (option.itemName) {
         case 'Sell by owner':
           localStorage.setItem('owner', '1');
           this.distributor = Distributor.PROPRIETAR;
@@ -283,18 +301,19 @@ export class AnnouncementsComponent implements OnInit {
 
     this.nrRooms = +localStorage.getItem('nrRooms');
 
-    this.selectedOptions = [];
+    this.selectedOptions1 = [];
+    this.selectedOptions3 = [];
     if (localStorage.getItem('newBuilding') === '1') {
-      this.selectedOptions.push({id: 1, itemName: 'New buildings(>2000)'});
+      this.selectedOptions1.push({id: 1, itemName: 'New buildings(>2000)'});
     }
     if (localStorage.getItem('oldBuilding') === '1') {
-      this.selectedOptions.push({id: 2, itemName: 'Old buildings(<2000)'});
+      this.selectedOptions1.push({id: 2, itemName: 'Old buildings(<2000)'});
     }
     if (localStorage.getItem('owner') === '1') {
-      this.selectedOptions.push({id: 3, itemName: 'Sell by owner'});
+      this.selectedOptions3.push({id: 3, itemName: 'Sell by owner'});
     }
     if (localStorage.getItem('agent') === '1') {
-      this.selectedOptions.push({ id: 4, itemName: 'Sell by real estate agent' });
+      this.selectedOptions3.push({ id: 4, itemName: 'Sell by real estate agent' });
     }
 
     this.selectedOptions2 = [];

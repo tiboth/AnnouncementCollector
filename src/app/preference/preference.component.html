@@ -29,20 +29,56 @@
     <aw-wizard-step stepTitle="Options"
                     [navigationSymbol]="{ symbol: '&#xf044;', fontFamily: 'FontAwesome' }">
       <div class="row justify-content-center">
-        <div class="col-sm-5 mt-5">
-          <angular2-multiselect [data]="optionList"
-                                name="dropdown"
-                                required
-                                [(ngModel)]="selectedOptions"
-                                [settings]="optionSettings"
-                                (onSelect)="onOptionSelect()"
-                                (onDeSelect)="OnOptionDeSelect()"
-                                (onSelectAll)="onSelectAllOptions()"
-                                (onDeSelectAll)="onDeSelectAllOptions()">
-          </angular2-multiselect>
+        <div class="col-sm-8 mt-5">
+          <!--          <angular2-multiselect [data]="optionList"-->
+          <!--                                name="dropdown"-->
+          <!--                                required-->
+          <!--                                [(ngModel)]="selectedOptions"-->
+          <!--                                [settings]="optionSettings"-->
+          <!--                                (onSelect)="onOptionSelect()"-->
+          <!--                                (onDeSelect)="OnOptionDeSelect()"-->
+          <!--                                (onSelectAll)="onSelectAllOptions()"-->
+          <!--                                (onDeSelectAll)="onDeSelectAllOptions()">-->
+          <!--          </angular2-multiselect>-->
+          <div class="container">
+            <div class="row" style="height: 45px;">
+              <div class="col-md">
+                Select construction year:
+              </div>
+              <div class="col-md">
+                <angular2-multiselect [data]="optionList1"
+                                      name="dropdown"
+                                      required
+                                      [(ngModel)]="selectedOptions1"
+                                      [settings]="optionSettings1"
+                                      (onSelect)="onOptionSelect()"
+                                      (onDeSelect)="OnOptionDeSelect()"
+                                      (onSelectAll)="onSelectAllOptions()"
+                                      (onDeSelectAll)="onDeSelectAllOptions()">
+                </angular2-multiselect>
+              </div>
+            </div>
+            <div class="row mt-3">
+              <div class="col-md">
+                Select distributor:
+              </div>
+              <div class="col-md">
+                <angular2-multiselect [data]="optionList3"
+                                      name="dropdown"
+                                      required
+                                      [(ngModel)]="selectedOptions3"
+                                      [settings]="optionSettings3"
+                                      (onSelect)="onOptionSelect()"
+                                      (onDeSelect)="OnOptionDeSelect()"
+                                      (onSelectAll)="onSelectAllOptions()"
+                                      (onDeSelectAll)="onDeSelectAllOptions()">
+                </angular2-multiselect>
+              </div>
+            </div>
+          </div>
         </div>
       </div>
-      <div class="row" style="margin-top: 100px;">
+      <div class="row" style="margin-top: 50px;">
         <button type="button" class="btn btn-outline-secondary col-2 mr-auto" awPreviousStep>Previous</button>
         <button type="button" class="btn btn-outline-success col-2 ml-auto" awNextStep> Next</button>
       </div>
