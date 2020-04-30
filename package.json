@@ -31,7 +31,7 @@
     "chart.js": "^2.8.0",
     "core-js": "^2.5.4",
     "font-awesome": "^4.7.0",
-    "jquery": "^3.4.0",
+    "jquery": "^3.5.0",
     "net": "^1.0.2",
     "ng-animate": "^0.3.4",
     "ng2-scroll-to": "^1.0.7",
